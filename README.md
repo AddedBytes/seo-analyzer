@@ -1,10 +1,14 @@
+## This is a fork
+
+This is a fork of [this SEO analyzer project](https://github.com/grgk/seo-analyzer), which appears dead.
+
 ## Requirements
 
 * PHP 8.1 (or higher)
 
 ## Installation
 
-No packagist support yet.
+composer require addedbytes/seo-analyzer
 
 ## How to use?
 
