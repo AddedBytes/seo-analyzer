@@ -1,5 +1,5 @@
 {
-  "name": "grgk/seo-analyzer",
+  "name": "addedbytes/seo-analyzer",
   "description": "Seo Analyzer",
   "type": "library",
   "license": "MIT",
@@ -7,7 +7,7 @@
     "php": ">=7.1",
     "ext-dom": "*",
     "ext-libxml": "*",
-    "guzzlehttp/guzzle": "^6.3",
+    "guzzlehttp/guzzle": "^7",
     "symfony/cache": "^4.2",
     "symfony/translation": "^4.2",
     "symfony/yaml": "^4.2",
