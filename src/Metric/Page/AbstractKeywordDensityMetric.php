@@ -13,6 +13,13 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
 
     public function __construct($inputData)
     {
+        if (!$inputData) {
+            // Unit tests fail here because sometimes inputDAta is not an array
+            // so set some default params for when there's a breaking input
+            $inputData = [
+                'locale' => 'en_GB'
+            ];
+        }
         if (empty($inputData['stop_words'])) {
             $stopWordsFilename = dirname(__DIR__, 3) . '/locale/' . $inputData['locale'] . '_stop_words.yml';
             if (is_file($stopWordsFilename)) {

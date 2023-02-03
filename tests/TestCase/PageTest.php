@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\TestCase;
 
 use SeoAnalyzer\Page;

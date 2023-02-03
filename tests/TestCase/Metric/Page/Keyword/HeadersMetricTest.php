@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\TestCase\Metric\Page\Keyword;
 
 use SeoAnalyzer\Metric\Page\Keyword\HeadersMetric;
@@ -14,7 +15,7 @@ class HeadersMetricTest extends TestCase
     {
         $metric = new HeadersMetric($value);
         $message = $metric->analyze();
-        $this->assertContains($expected['message'], $message);
+        $this->assertStringContainsString($expected['message'], $message);
         $this->assertEquals($metric->impact, $expected['impact']);
     }
 

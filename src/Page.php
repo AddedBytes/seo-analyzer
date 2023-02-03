@@ -158,7 +158,7 @@ class Page
     protected function getPageLoadFactors(int $ttl = 300): array
     {
         $cache = new Cache();
-        return $cache->remember('page_content_'. base64_encode($this->url), function () {
+        return $cache->remember('page_content_' . base64_encode($this->url), function () {
             $starTime = microtime(true);
             $response = $this->client->get($this->url);
             $loadTime = number_format((microtime(true) - $starTime), 4);

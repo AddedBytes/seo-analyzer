@@ -22,7 +22,7 @@ class AnalyzerTest extends TestCase
         $results = $analyzer->analyzeUrl('http://www.example.org');
         $this->assertTrue(is_array($results));
         $this->assertEquals(count($analyzer->getMetrics()), count($results));
-        $this->assertContains('You should avoid redirects', $results['PageRedirect']['analysis']);
+        $this->assertStringContainsString('You should avoid redirects', $results['PageRedirect']['analysis']);
         $this->assertArrayHasKey('analysis', current($results));
         $this->assertArrayHasKey('name', current($results));
         $this->assertArrayHasKey('description', current($results));
@@ -41,7 +41,7 @@ class AnalyzerTest extends TestCase
         $results = $analyzer->analyzeUrl('http://www.example.org', 'keyword', 'pl_PL');
         $this->assertTrue(is_array($results));
         $this->assertEquals(count($analyzer->getMetrics()), count($results));
-        $this->assertContains('Powinienieś unikać przekierowań', $results['PageRedirect']['analysis']);
+        $this->assertStringContainsString('Powinienieś unikać przekierowań', $results['PageRedirect']['analysis']);
     }
 
     /**
@@ -69,6 +69,8 @@ class AnalyzerTest extends TestCase
      */
     public function testAnalyzeUrlFailOnInvalidUrl()
     {
+        $this->expectException(\SeoAnalyzer\HttpClient\Exception\HttpException::class);
+
         (new Analyzer())->analyzeUrl('invalid-url');
     }
 
@@ -132,6 +134,8 @@ class AnalyzerTest extends TestCase
      */
     public function testAnalyzeFailOnNoPage()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $analyzer = new Analyzer();
         $analyzer->analyze();
     }

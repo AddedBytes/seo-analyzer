@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\TestCase\Metric;
 
 use ReflectionException;
@@ -14,7 +15,7 @@ class MetricsTest extends TestCase
      */
     protected $translator;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $analyzer = new Analyzer();
@@ -38,7 +39,7 @@ class MetricsTest extends TestCase
             $this->assertSame($expected['value'], $metric->value);
         }
         $this->assertEquals($expected['impact'], $metric->impact);
-        $this->assertContains($expected['analysis'], $analysis);
+        $this->assertStringContainsString($expected['analysis'], $analysis);
         $this->assertNotEquals($metric->description, $this->translator->trans($metric->description));
         $this->assertNotEquals($analysis, $this->translator->trans($analysis));
     }

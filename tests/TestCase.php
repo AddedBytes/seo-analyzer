@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHPUnit.
  *
@@ -18,7 +19,7 @@ use SeoAnalyzer\HttpClient\ClientInterface;
 
 abstract class TestCase extends PhpUnitTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $cache = new Cache();

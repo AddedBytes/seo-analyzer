@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\TestCase\Metric\Page\Content;
 
 use ReflectionException;
@@ -17,7 +18,7 @@ class SizeMetricTest extends TestCase
     {
         $metric = new SizeMetric($value);
         $message = $metric->analyze();
-        $this->assertContains($expected['message'], $message);
+        $this->assertStringContainsString($expected['message'], $message);
         $this->assertEquals($metric->impact, $expected['impact']);
     }
 
