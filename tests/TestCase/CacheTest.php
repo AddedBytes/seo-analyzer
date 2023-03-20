@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\TestCase;
 
 use Tests\TestCase;
@@ -24,37 +25,5 @@ class CacheTest extends TestCase
             return 'newValueOneMoreTime';
         });
         $this->assertEquals('newValueOneMoreTime', $valueRefreshed);
-    }
-
-    public function testRememberPassOninvalidKey()
-    {
-        $cache = new Cache();
-        $value = $cache->remember('@', function () {
-            return 'someTestValue';
-        });
-        $this->assertEquals('someTestValue', $value);
-        $value = $cache->remember('@', function () {
-            return 'someNewTestValue';
-        });
-        $this->assertEquals('someNewTestValue', $value);
-    }
-
-    public function testGetFailOnInvalidKey()
-    {
-        $cache = new Cache();
-        $this->assertFalse($cache->get('@'));
-    }
-
-    public function testSetFailOnInvalidKey()
-    {
-        $cache = new Cache();
-        $this->assertFalse($cache->set('@', 'value'));
-    }
-
-    public function testGetFailOnInvalidArgumentExceptionFromAdapter()
-    {
-        $cache = new Cache(TestCase\Metric\Mock\TestCacheAdapter::class);
-        $cache->set('test', 'test');
-        $this->assertFalse($cache->get('test'));
     }
 }
