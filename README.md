@@ -1,7 +1,7 @@
 # SEO Analyzer
 Basic PHP library to check several SEO metrics of a website.
 
-
+[![PHP Composer](https://github.com/AddedBytes/seo-analyzer/actions/workflows/php.yml/badge.svg)](https://github.com/AddedBytes/seo-analyzer/actions/workflows/php.yml)
 
 ## This is a fork
 
