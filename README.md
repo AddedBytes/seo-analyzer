@@ -1,3 +1,8 @@
+# SEO Analyzer
+Basic PHP library to check several SEO metrics of a website.
+
+
+
 ## This is a fork
 
 This is a fork of [this SEO analyzer project](https://github.com/grgk/seo-analyzer), which appears dead.
@@ -7,8 +12,9 @@ This is a fork of [this SEO analyzer project](https://github.com/grgk/seo-analyz
 * PHP 8.1 (or higher)
 
 ## Installation
-
+```
 composer require addedbytes/seo-analyzer
+```
 
 ## How to use?
 
