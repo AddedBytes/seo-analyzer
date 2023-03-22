@@ -1,18 +1,18 @@
-FROM php:7.2-alpine
+FROM php:8.1-fpm-alpine
 
 RUN apk update && \
   apk upgrade && \
   apk add \
-    php7-mbstring \
-    php7-bcmath \
+    php8-mbstring \
+    php8-bcmath \
     bash \
     git && \
   ln -sf \
-    /usr/bin/php7 \
+    /usr/bin/php8 \
     /usr/bin/php && \
   rm -rf \
     /var/cache/apk/* \
-    /etc/php7/*
+    /etc/php8/*
 
 RUN docker-php-ext-install mbstring bcmath
 
