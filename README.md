@@ -18,7 +18,7 @@ composer require addedbytes/seo-analyzer
 
 ## How to use?
 
-Please check the `examples` dir
+Please check the [examples](examples) dir
 
 ## Available metrics
 
@@ -45,9 +45,9 @@ This tools uses several metrics to analyze and rate website suggesting some SEO 
 
 ## Translations
 
-On how to translate messages please check `examples/analyze_url_with_keyword_translated.php` file.
+On how to translate messages please check [analyze_url_with_keyword_translated.php](examples%2Fanalyze_url_with_keyword_translated.php) file.
 
-You can add more translations by adding translation files to `locale` directory.
+You can add more translations by adding translation files to [locale](locale) directory.
 
 ## License
 Licensed under the [MIT license](http://opensource.org/licenses/MIT).
