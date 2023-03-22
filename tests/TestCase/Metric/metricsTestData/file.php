@@ -1,10 +1,13 @@
 <?php
+
+use SeoAnalyzer\Metric\File\RobotsMetric;
+use SeoAnalyzer\Metric\File\SitemapMetric;
 return [
     [
         'file.robots',
         "User-agent: *\nDisallow:\n",
         [
-            'class' => '\SeoAnalyzer\Metric\File\RobotsMetric',
+            'class' => '\\' . RobotsMetric::class,
             'value' => "User-agent: *\nDisallow:\n",
             'impact' => 0,
             'analysis' => 'yes'
@@ -14,7 +17,7 @@ return [
         'file.robots',
         false,
         [
-            'class' => '\SeoAnalyzer\Metric\File\RobotsMetric',
+            'class' => '\\' . RobotsMetric::class,
             'value' => false,
             'impact' => 1,
             'analysis' => 'no'
@@ -24,7 +27,7 @@ return [
         'file.robots',
         'Disallow: /*',
         [
-            'class' => '\SeoAnalyzer\Metric\File\RobotsMetric',
+            'class' => '\\' . RobotsMetric::class,
             'value' => 'Disallow: /*',
             'impact' => 5,
             'analysis' => 'Robots.txt file blocks some parts of your site'
@@ -35,7 +38,7 @@ return [
         'file.sitemap',
         '<?xml version="1.0" encoding="UTF-8"?>',
         [
-            'class' => '\SeoAnalyzer\Metric\File\SitemapMetric',
+            'class' => '\\' . SitemapMetric::class,
             'value' => '<?xml version="1.0" encoding="UTF-8"?>',
             'impact' => 0,
             'analysis' => 'yes'
@@ -45,7 +48,7 @@ return [
         'file.sitemap',
         false,
         [
-            'class' => '\SeoAnalyzer\Metric\File\SitemapMetric',
+            'class' => '\\' . SitemapMetric::class,
             'value' => false,
             'impact' => 1,
             'analysis' => 'You should consider adding a sitemap.xml'

@@ -54,24 +54,20 @@ class MetaMetric extends AbstractMetric
         if (empty($this->value)) {
             return parent::setUpResultsConditions($conditions);
         }
-        $conditions = array_merge($conditions, [
-            'title_length' => $this->checkTitleTag(),
-            'missing_description' => isset($this->value['meta']) && empty($this->value['meta'][self::DESCRIPTION]),
-            'description_length' => $this->checkMetaDescriptionTag()
-        ]);
+        $conditions = [...$conditions, 'title_length' => $this->checkTitleTag(), 'missing_description' => isset($this->value['meta']) && empty($this->value['meta'][self::DESCRIPTION]), 'description_length' => $this->checkMetaDescriptionTag()];
         return parent::setUpResultsConditions($conditions);
     }
 
-    private function checkTitleTag($minLength = 10, $maxLength = 60)
+    private function checkTitleTag(): bool
     {
         return isset($this->value[Factor::TITLE])
-            && (strlen($this->value[Factor::TITLE]) < $minLength || strlen($this->value[Factor::TITLE]) > $maxLength);
+            && (strlen((string) $this->value[Factor::TITLE]) < 10 || strlen((string) $this->value[Factor::TITLE]) > 60);
     }
 
-    private function checkMetaDescriptionTag($minLength = 30, $maxLength = 120)
+    private function checkMetaDescriptionTag(): bool
     {
         return isset($this->value[Factor::META][self::DESCRIPTION])
-            && (strlen($this->value[Factor::META][self::DESCRIPTION]) < $minLength
-                || strlen($this->value[Factor::META][self::DESCRIPTION]) > $maxLength);
+            && (strlen((string) $this->value[Factor::META][self::DESCRIPTION]) < 30
+                || strlen((string) $this->value[Factor::META][self::DESCRIPTION]) > 120);
     }
 }

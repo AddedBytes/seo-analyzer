@@ -36,8 +36,6 @@ abstract class AbstractParser implements ParserInterface
 
     /**
      * Removes specified tags with it's content from DOM.
-     *
-     * @param string $tag
      */
     protected function removeTags(string $tag)
     {
@@ -53,7 +51,6 @@ abstract class AbstractParser implements ParserInterface
     /**
      * Returns DOM elements by tag name.
      *
-     * @param string $name
      * @return DOMNodeList|DOMElement[]
      */
     protected function getDomElements(string $name): DOMNodeList

@@ -61,7 +61,6 @@ class Analyzer
      * @param string $url Url to analyze
      * @param string|null $keyword
      * @param string|null $locale
-     * @return array
      * @throws ReflectionException
      */
     public function analyzeUrl(string $url, string $keyword = null, string $locale = null): array
@@ -79,9 +78,7 @@ class Analyzer
     /**
      * Analyzes html document from file.
      *
-     * @param string $filename
      * @param string|null $locale
-     * @return array
      * @throws ReflectionException
      */
     public function analyzeFile(string $filename, string $locale = null): array
@@ -94,9 +91,7 @@ class Analyzer
     /**
      * Analyzes html document from string.
      *
-     * @param string $htmlString
      * @param string|null $locale
-     * @return array
      * @throws ReflectionException
      */
     public function analyzeHtml(string $htmlString, string $locale = null): array
@@ -132,7 +127,6 @@ class Analyzer
     /**
      * Returns available metrics list for a Page
      *
-     * @return array
      * @throws ReflectionException
      */
     public function getMetrics(): array
@@ -143,7 +137,6 @@ class Analyzer
     /**
      * Returns file related metrics.
      *
-     * @return array
      * @throws ReflectionException
      */
     public function getFilesMetrics(): array
@@ -165,9 +158,8 @@ class Analyzer
      *
      * @param $url
      * @param $filename
-     * @return bool|string
      */
-    protected function getFileContent($url, $filename)
+    protected function getFileContent($url, $filename): bool|string
     {
         $cache = new Cache();
         $cacheKey = 'file_content_' . base64_encode($url . '/' . $filename);
@@ -177,7 +169,7 @@ class Analyzer
         try {
             $response = $this->client->get($url . '/' . $filename);
             $content = $response->getBody()->getContents();
-        } catch (HttpException $e) {
+        } catch (HttpException) {
             return false;
         }
         $cache->set($cacheKey, $content, 300);
@@ -186,8 +178,6 @@ class Analyzer
 
     /**
      * Sets up the translator for current locale.
-     *
-     * @param string $locale
      */
     public function setUpTranslator(string $locale)
     {
@@ -204,9 +194,7 @@ class Analyzer
     /**
      * Formats metric analysis results.
      *
-     * @param MetricInterface $metric
      * @param $results
-     * @return array
      */
     protected function formatResults(MetricInterface $metric, string $results): array
     {

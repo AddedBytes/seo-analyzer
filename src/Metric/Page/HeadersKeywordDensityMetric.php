@@ -21,8 +21,6 @@ class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
 
     /**
      * Get overused words from headers.
-     *
-     * @return array
      */
     protected function getHeadersOverusedWords(): array
     {
@@ -38,9 +36,6 @@ class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
 
     /**
      * Returns headers keywords.
-     *
-     * @param int $maxPhaseWords
-     * @return array
      */
     protected function getHeadersKeywords(int $maxPhaseWords = 3): array
     {

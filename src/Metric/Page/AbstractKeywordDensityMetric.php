@@ -35,30 +35,22 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
     /**
      * Cleans the text input and returns array of words.
      *
-     * @param string $text
-     * @param array $stopWords
      * @return array
      */
     protected function getWords(string $text, array $stopWords = []): array
     {
         $text = html_entity_decode($text);
-        $stopWords = array_map(function ($word) {
-            return trim($word);
-        }, $stopWords);
+        $stopWords = array_map(fn($word) => trim((string) $word), $stopWords);
         $stopWords = array_merge($stopWords, ['\'', '"', "-", "_"]);
         $text = strtolower(preg_replace('/[^a-zA-Z0-9\s]/', '', $text));
         $words = str_word_count($text, 1);
         $words = array_diff($words, $stopWords);
-        return array_values(array_filter($words, function ($word) {
-            return strlen($word) > 2;
-        }));
+        return array_values(array_filter($words, fn($word) => strlen((string) $word) > 2));
     }
 
     /**
      * Returns most popular keywords used in text with it's use percentage.
      *
-     * @param string $text
-     * @param array $stopWords
      * @param int $maxPhraseWords
      * @param int $minCount Minimum keyword count
      * @return array
@@ -83,18 +75,13 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
     /**
      * Calculates the percentage of keywords frequency.
      *
-     * @param array $keywords
-     * @param int $minCount
-     * @param int $limit
      * @return array
      */
     protected function calculateKeywordsPercentage(array $keywords, int $minCount = 0, int $limit = 10): array
     {
         $keywords = array_count_values($keywords);
         arsort($keywords);
-        $keywords = array_filter($keywords, function ($count) use ($minCount) {
-            return $count >= $minCount;
-        });
+        $keywords = array_filter($keywords, fn($count) => $count >= $minCount);
         $keywordsCount = array_sum($keywords);
         foreach ($keywords as $keyword => $count) {
             $keywords[$keyword] = round($count / $keywordsCount * 100);
@@ -105,8 +92,6 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
     /**
      * Prepares keyword phrases form texts's words.
      *
-     * @param array $words
-     * @param int $maxPhraseWords
      * @return array
      */
     protected function getKeywords(array $words, int $maxPhraseWords): array
@@ -130,9 +115,6 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
     /**
      * Returns overused keywords based on max count specified.
      *
-     * @param array $keywords
-     * @param int $maxPercentage
-     * @param int $maxPhraseWords
      * @return array
      */
     protected function getOverusedKeywords(array $keywords, int $maxPercentage = 10, int $maxPhraseWords = 4): array

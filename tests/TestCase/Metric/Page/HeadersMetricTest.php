@@ -2,6 +2,7 @@
 
 namespace Tests\TestCase\Metric\Page;
 
+use ReflectionException;
 use SeoAnalyzer\Metric\Page\HeadersMetric;
 use Tests\TestCase;
 
@@ -9,7 +10,7 @@ class HeadersMetricTest extends TestCase
 {
     /**
      * @dataProvider metricsDataProvider
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function testAnalyzePass($value, array $expected)
     {

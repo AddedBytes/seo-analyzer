@@ -12,18 +12,12 @@ class CacheTest extends TestCase
     {
         $cache = new Cache();
         $cache->adapter->delete('testCacheKey');
-        $value = $cache->remember('testCacheKey', function () {
-            return 'initialValue';
-        });
+        $value = $cache->remember('testCacheKey', fn() => 'initialValue');
         $this->assertEquals('initialValue', $value);
-        $valueCached = $cache->remember('testCacheKey', function () {
-            return 'newValue';
-        });
+        $valueCached = $cache->remember('testCacheKey', fn() => 'newValue');
         $this->assertEquals('initialValue', $valueCached);
         $cache->adapter->delete('testCacheKey');
-        $valueRefreshed = $cache->remember('testCacheKey', function () {
-            return 'newValueOneMoreTime';
-        });
+        $valueRefreshed = $cache->remember('testCacheKey', fn() => 'newValueOneMoreTime');
         $this->assertEquals('newValueOneMoreTime', $valueRefreshed);
     }
 }

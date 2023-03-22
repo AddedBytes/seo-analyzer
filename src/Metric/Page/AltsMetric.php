@@ -16,8 +16,8 @@ class AltsMetric extends AbstractMetric
         if (empty($this->value)) {
             return 'There is nothing to do here as there is no images on the site.';
         }
-        $imagesCount = count($this->value);
-        $altsCount = count(array_filter($this->value));
+        $imagesCount = is_countable($this->value) ? count($this->value) : 0;
+        $altsCount = count((array) array_filter($this->value));
         $emptyAlts = $imagesCount - $altsCount;
         switch (true) {
             case ($emptyAlts > 10):

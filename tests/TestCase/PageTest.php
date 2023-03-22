@@ -2,6 +2,7 @@
 
 namespace Tests\TestCase;
 
+use ReflectionException;
 use SeoAnalyzer\Page;
 use Tests\TestCase;
 
@@ -19,7 +20,7 @@ class PageTest extends TestCase
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function testGetMetricsPassWithUrl()
     {

@@ -70,13 +70,13 @@ class HeadersMetric extends AbstractMetric
             $conditions = array_merge($conditions, [
                 'no_H1' => empty($this->value['h1']) || empty($this->value['h1'][0]),
                 'no_H2' => empty($this->value['h2']) || empty($this->value['h2'][0]),
-                'too_many_H2' => !empty($this->value['h2']) && count($this->value['h2']) > 5,
+                'too_many_H2' => !empty($this->value['h2']) && (is_countable($this->value['h2']) ? count($this->value['h2']) : 0) > 5,
                 'no_H3' => empty($this->value['h3']) || empty($this->value['h3'][0])
             ]);
             if (!empty($this->value['h1'])) {
                 $conditions = array_merge($conditions, [
-                    'multi_H1' => count($this->value['h1']) > 1,
-                    'too_long_H1' => strlen($this->value['h1'][0]) > 35
+                    'multi_H1' => (is_countable($this->value['h1']) ? count($this->value['h1']) : 0) > 1,
+                    'too_long_H1' => strlen((string) $this->value['h1'][0]) > 35
                 ]);
             }
         }

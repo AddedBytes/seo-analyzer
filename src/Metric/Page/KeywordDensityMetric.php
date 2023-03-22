@@ -37,7 +37,7 @@ class KeywordDensityMetric extends AbstractKeywordDensityMetric implements Keywo
         $this->value[Factor::KEYWORD] = $this->keyword;
         $isPresent = false;
         foreach ($this->getPhrases() as $phrase) {
-            if (stripos($phrase, $this->keyword) !== false) {
+            if (stripos((string) $phrase, (string) $this->keyword) !== false) {
                 if (in_array($this->keyword, $overusedWords)) {
                     $this->impact = 4;
                     return 'The key phrase is overused on the site. Try to reduce its occurrence';

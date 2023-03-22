@@ -7,10 +7,10 @@ use ReflectionException;
 
 abstract class AbstractMetric implements MetricInterface
 {
-    const HEADERS = 'headers';
-    const DESCRIPTION = 'description';
-    const IMPACT = 'impact';
-    const MESSAGE = 'message';
+    final public const HEADERS = 'headers';
+    final public const DESCRIPTION = 'description';
+    final public const IMPACT = 'impact';
+    final public const MESSAGE = 'message';
 
     /**
      * @var array Possible results configuration.
@@ -41,7 +41,7 @@ abstract class AbstractMetric implements MetricInterface
      * @param mixed $inputData Input data to compute metric value
      * @throws ReflectionException
      */
-    public function __construct($inputData)
+    public function __construct(mixed $inputData)
     {
         if (empty($this->name)) {
             $this->name = str_replace(['SeoAnalyzer\\', 'Metric', '\\'], '', (new ReflectionClass($this))->getName());
@@ -52,7 +52,6 @@ abstract class AbstractMetric implements MetricInterface
     /**
      * Sets up the conditions for results configured.
      *
-     * @param array $conditions
      * @return bool
      */
     protected function setUpResultsConditions(array $conditions): bool

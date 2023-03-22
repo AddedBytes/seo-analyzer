@@ -13,78 +13,79 @@ use SeoAnalyzer\Parser\ParserInterface;
 
 class Page
 {
-    const LOCALE = 'locale';
-    const STOP_WORDS = 'stop_words';
-    const KEYWORD = 'keyword';
-    const IMPACT = 'impact';
-    const TEXT = 'text';
-    const HEADERS = 'headers';
+    final public const LOCALE = 'locale';
+    final public const STOP_WORDS = 'stop_words';
+    final public const KEYWORD = 'keyword';
+    final public const IMPACT = 'impact';
+    final public const TEXT = 'text';
+    final public const HEADERS = 'headers';
 
     /**
      * @var string URL of web page
      */
-    public $url;
+    public string $url;
 
     /**
      * @var array Configuration
      */
-    public $config;
+    public array $config;
 
     /**
      * @var string Page locale
      */
-    public $locale = 'en_GB';
+    public string $locale = 'en_GB';
 
     /**
      * @var string Keyword to use in analyse
      */
-    public $keyword;
+    public string $keyword;
 
     /**
      * @var array Stop word used in keyword density analyse
      */
-    public $stopWords = [];
+    public array $stopWords = [];
 
     /**
      * @var string Web page content (html)
      */
-    public $content;
+    public string $content;
 
     /**
      * @var array Web page factors values
      */
-    public $factors = [];
+    public array $factors = [];
 
     /**
      * @var ClientInterface
      */
-    public $client;
+    public Client|ClientInterface $client;
 
     /**
      * @var ParserInterface
      */
-    public $parser;
+    public Parser|ParserInterface $parser;
 
     /**
      * Page constructor.
-     *
-     * @param string|null $url
-     * @param string|array $config Due to the backwards compatibility: locale if string, config if array
-     * @param ClientInterface|null $client
-     * @param ParserInterface|null $parser
+     * @param  string|null  $url
+     * @param  array|string  $config  Due to the backwards compatibility: locale if string, config if array
+     * @param  ClientInterface|null  $client
+     * @param  ParserInterface|null  $parser
+     * @throws HttpException
      */
     public function __construct(
-        string $url = null,
-        $config = [],
-        ClientInterface $client = null,
-        ParserInterface $parser = null
+        string|null $url = null,
+        array|string|null $config = null,
+        ClientInterface|null $client = null,
+        ParserInterface|null $parser = null
     ) {
+        $config ??= [];
         $this->client = $client ?? new Client();
         $this->parser = $parser ?? new Parser();
         if (is_string($config)) { // Due to the backwards compatibility
             $config = [self::LOCALE => $config];
         }
-        if (is_null($config)) { // Due to the backwards compatibility
+        if ($config === null) { // Due to the backwards compatibility
             $config = [self::LOCALE => $this->locale];
         }
         $this->setConfig($config);
@@ -97,7 +98,6 @@ class Page
     /**
      * Verifies URL and sets up some basic metrics.
      *
-     * @param string $url
      * @return string URL
      */
     protected function setUpUrl(string $url): string
@@ -121,10 +121,8 @@ class Page
 
     /**
      * Sets configuration.
-     *
-     * @param array $config
      */
-    public function setConfig(array $config)
+    public function setConfig(array $config): void
     {
         $this->config = require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'config/default.php';
         foreach ($this->config as $configItemKey => $configItemValue) {
@@ -137,8 +135,9 @@ class Page
 
     /**
      * Downloads page content from URL specified and sets up some base metrics.
+     * @throws HttpException
      */
-    public function getContent()
+    public function getContent(): void
     {
         $pageLoadFactors = $this->getPageLoadFactors();
         $this->setFactor(Factor::LOAD_TIME, $pageLoadFactors['time']);
@@ -151,9 +150,8 @@ class Page
 
     /**
      * Sets page load related factors.
-     *
-     * @param int $ttl Cache ttl in seconds.
-     * @return array
+     * @param  int  $ttl  Cache ttl in seconds.
+     * @throws HttpException
      */
     protected function getPageLoadFactors(int $ttl = 300): array
     {
@@ -180,15 +178,15 @@ class Page
      * @param int $ttl Cache ttl in seconds.
      * @return int|false Http code or false on failure.
      */
-    protected function getSSLResponseCode(int $ttl = 300)
+    protected function getSSLResponseCode(int $ttl = 300): int|false
     {
         $cache = new Cache();
         return $cache->remember(
             'https_response_code_' . base64_encode('https://' . $this->url),
             function () {
                 try {
-                    return $this->client->get(str_replace('http://', 'https://', $this->url))->getStatusCode();
-                } catch (HttpException $e) {
+                    return $this->client->get(str_replace('http://', 'https://', $this->url))->getStatusCode() ?? false;
+                } catch (HttpException) {
                     return false;
                 }
             },
@@ -198,8 +196,9 @@ class Page
 
     /**
      * Parses page's html content setting up related metrics.
+     * @throws HttpException
      */
-    public function parse()
+    public function parse(): void
     {
         if (empty($this->content)) {
             $this->getContent();
@@ -216,9 +215,7 @@ class Page
 
     /**
      * Returns page metrics.
-     *
-     * @return array
-     * @throws ReflectionException
+     * @throws ReflectionException|HttpException
      */
     public function getMetrics(): array
     {
@@ -228,18 +225,20 @@ class Page
 
     /**
      * Sets up and returns page metrics based on configuration specified.
-     *
-     * @param array $config
      * @return array
-     * @throws ReflectionException
+     * @throws ReflectionException*@throws HttpException
+     * @throws HttpException
      */
-    public function setMetrics(array $config)
+    public function setMetrics(array $config): array
     {
         $this->initializeFactors();
         return $this->setUpMetrics($config);
     }
 
-    private function initializeFactors()
+    /**
+     * @throws HttpException
+     */
+    private function initializeFactors(): void
     {
         if (empty($this->dom)) {
             $this->parse();
@@ -253,13 +252,13 @@ class Page
     /**
      * Sets up page content related factors for page metrics.
      */
-    public function setUpContentFactors()
+    public function setUpContentFactors(): void
     {
         $this->setFactors([
             Factor::CONTENT_HTML => $this->content,
             Factor::CONTENT_SIZE => strlen($this->content),
             Factor::CONTENT_RATIO => [
-                'content_size' => strlen(preg_replace('!\s+!', ' ', $this->getFactor(Factor::TEXT))),
+                'content_size' => strlen(preg_replace('!\s+!', ' ', (string) $this->getFactor(Factor::TEXT))),
                 'code_size' => strlen($this->content)
             ],
             Factor::DENSITY_PAGE => [
@@ -277,10 +276,8 @@ class Page
 
     /**
      * Sets up page content factors keyword related.
-     *
-     * @param string $keyword
      */
-    public function setUpContentKeywordFactors(string $keyword)
+    public function setUpContentKeywordFactors(string $keyword): void
     {
         $this->setFactors([
             Factor::KEYWORD_URL => [
@@ -324,7 +321,7 @@ class Page
      * @return array
      * @throws ReflectionException
      */
-    public function setUpMetrics(array $config = [])
+    public function setUpMetrics(array $config = []): array
     {
         $metrics = [];
         foreach ($config as $factor) {
@@ -335,20 +332,13 @@ class Page
             }
             $metricObject = MetricFactory::get('page.' . $metric, $this->getFactor($factor));
             if (!$metricObject instanceof KeywordBasedMetricInterface || !empty($this->keyword)) {
-                $metrics['page_' . str_replace('.', '_', $metric)] = $metricObject;
+                $metrics['page_' . str_replace('.', '_', (string) $metric)] = $metricObject;
             }
         }
         return $metrics;
     }
 
-    /**
-     * Sets page factor value.
-     *
-     * @param string $name
-     * @param mixed $value
-     * @return array
-     */
-    public function setFactor(string $name, $value)
+    public function setFactor(string $name, mixed $value): int|array
     {
         if (count(explode('.', $name)) > 1) {
             $this->setArrayByDot($this->factors, $name, $value);
@@ -360,13 +350,12 @@ class Page
 
     /**
      * Sets array values using string with dot notation.
-     *
-     * @param array $array Array to be updated
-     * @param string $path Dot notated string
-     * @param mixed $val Value to be set in array
-     * @return array
+     * @param  array  $array  Array to be updated
+     * @param  string  $path  Dot notated string
+     * @param  mixed  $val  Value to be set in array
+     * @return mixed
      */
-    protected function setArrayByDot(array &$array, string $path, $val)
+    protected function setArrayByDot(array &$array, string $path, mixed $val): mixed
     {
         $loc = &$array;
         foreach (explode('.', $path) as $step) {
@@ -377,10 +366,8 @@ class Page
 
     /**
      * Sets multiple page factors values at once.
-     *
-     * @param array $factors
      */
-    public function setFactors(array $factors)
+    public function setFactors(array $factors): void
     {
         foreach ($factors as $factorName => $factorValue) {
             $this->setFactor($factorName, $factorValue);
@@ -389,13 +376,12 @@ class Page
 
     /**
      * Returns factor data collected by it's key name.
-     *
      * @param string $name
      * @return mixed
      */
-    public function getFactor($name)
+    public function getFactor(string $name): mixed
     {
-        if (strpos($name, '.') !== false) {
+        if (str_contains($name, '.')) {
             return $this->getNestedFactor($name);
         }
         if (!empty($this->factors[$name])) {
@@ -406,11 +392,10 @@ class Page
 
     /**
      * Returns factor data collected by it's key name.
-     *
      * @param string $name
      * @return mixed
      */
-    protected function getNestedFactor($name)
+    protected function getNestedFactor(string $name): mixed
     {
         $keys = explode('.', $name);
         $value = $this->factors;

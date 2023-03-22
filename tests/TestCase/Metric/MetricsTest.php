@@ -24,13 +24,10 @@ class MetricsTest extends TestCase
     }
 
     /**
-     * @param string $metricKey
-     * @param mixed $input
-     * @param array $expected
      * @dataProvider metricsDataProvider
      * @throws ReflectionException
      */
-    public function testAnalyzePass(string $metricKey, $input, array $expected)
+    public function testAnalyzePass(string $metricKey, mixed $input, array $expected)
     {
         $metric = MetricFactory::get($metricKey, $input);
         $this->assertInstanceOf($expected['class'], $metric);

@@ -2,19 +2,19 @@
 
 namespace SeoAnalyzer;
 
-use Symfony\Component\Cache\Exception\InvalidArgumentException;
-//use Symfony\Component\Cache\Simple\AbstractCache;
+use Exception;
+use Psr\SimpleCache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 
 class Cache
 {
     /**
-     * @var AbstractCache
+     * @var Psr16Cache
      */
-    public $adapter;
+    public Psr16Cache $adapter;
 
-    public function __construct(string $adapterClass = null, $ttl = 300)
+    public function __construct(string|null $adapterClass = null, $ttl = 300)
     {
         if (empty($adapterClass)) {
             $adapterClass = FilesystemAdapter::class;
@@ -28,7 +28,7 @@ class Cache
      * @param int|null $ttl Cache time in seconds. If empty global Cache ttl is used.
      * @return mixed
      */
-    public function remember(string $key, callable $callback, int $ttl = null)
+    public function remember(string $key, callable $callback, int|null $ttl = null): mixed
     {
         $value = $this->get($key);
         if (empty($value)) {
@@ -43,21 +43,20 @@ class Cache
     /**
      * Returns cached item or false it no cache found for that key.
      *
-     * @param string $cacheKey
      * @return bool|mixed
      */
-    public function get(string $cacheKey)
+    public function get(string $cacheKey): mixed
     {
         $value = false;
         try {
             $hasKey = $this->adapter->has($cacheKey);
-        } catch (InvalidArgumentException $e) {
+        } catch (Exception) {
             return false;
         }
         if ($hasKey) {
             try {
                 $value = $this->adapter->get($cacheKey);
-            } catch (\Psr\SimpleCache\InvalidArgumentException $e) {
+            } catch (Exception) {
                 return false;
             }
         }
@@ -67,16 +66,14 @@ class Cache
     /**
      * Stores value in cache.
      *
-     * @param string $cacheKey
      * @param $value
      * @param $ttl
-     * @return bool
      */
     public function set(string $cacheKey, $value, $ttl = null): bool
     {
         try {
             return $this->adapter->set($cacheKey, $value, $ttl);
-        } catch (\Psr\SimpleCache\InvalidArgumentException $e) {
+        } catch (Exception) {
             return false;
         }
     }

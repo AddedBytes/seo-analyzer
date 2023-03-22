@@ -7,7 +7,6 @@ use ReflectionException;
 class MetricFactory
 {
     /**
-     * @param string $key
      * @param null $inputData
      * @return mixed
      * @throws ReflectionException

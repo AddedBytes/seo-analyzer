@@ -1,4 +1,9 @@
 <?php
+
+use SeoAnalyzer\Metric\Page\KeywordDensityMetric;
+use SeoAnalyzer\Metric\Page\HeadersKeywordDensityMetric;
+use SeoAnalyzer\Metric\Page\KeywordMetric;
+use SeoAnalyzer\Metric\Page\Keyword\HeadersMetric;
 return [
     [
         'page.keywordDensity',
@@ -8,7 +13,7 @@ return [
             'stop_words' => ['to', 'you', 'all', 'of', 'and', 'the', 'who', 'has', 'can', 'but', 'or', 'how']
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\KeywordDensityMetric',
+            'class' => '\\' . KeywordDensityMetric::class,
             'impact' => 0,
             'analysis' => 'The keywords density on the site looks good'
         ]
@@ -21,7 +26,7 @@ return [
             'stop_words' => ['sit']
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\KeywordDensityMetric',
+            'class' => '\\' . KeywordDensityMetric::class,
             'impact' => 3,
             'analysis' => 'There are some overused keywords on site'
         ]
@@ -39,7 +44,7 @@ return [
             'stop_words' => ['sit', 'eui']
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\HeadersKeywordDensityMetric',
+            'class' => '\\' . HeadersKeywordDensityMetric::class,
             'impact' => 0,
             'analysis' => 'The keywords density in headers looks good'
         ]
@@ -56,7 +61,7 @@ return [
             'stop_words' => ['sit', 'eui']
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\HeadersKeywordDensityMetric',
+            'class' => '\\' . HeadersKeywordDensityMetric::class,
             'impact' => 4,
             'analysis' => 'There are some overused keywords in headers'
         ]
@@ -73,7 +78,7 @@ return [
             'stop_words' => []
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\HeadersKeywordDensityMetric',
+            'class' => '\\' . HeadersKeywordDensityMetric::class,
             'impact' => 4,
             'analysis' => 'There are some overused keywords in headers'
         ]
@@ -87,7 +92,7 @@ return [
             'type' => 'Test'
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\KeywordMetric',
+            'class' => '\\' . KeywordMetric::class,
             'impact' => 0,
             'analysis' => 'Good! Found the keyword phrase'
         ]
@@ -101,7 +106,7 @@ return [
             'type' => 'Test'
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\KeywordMetric',
+            'class' => '\\' . KeywordMetric::class,
             'impact' => 5,
             'analysis' => 'Can not find the keyword phrase'
         ]
@@ -118,7 +123,7 @@ return [
             'keyword' => 'lorem'
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\Keyword\HeadersMetric',
+            'class' => '\\' . HeadersMetric::class,
             'impact' => 0,
             'analysis' => 'Good! The site headers contain the keyword phrase'
         ]
@@ -130,7 +135,7 @@ return [
             'keyword' => 'lorem'
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\Keyword\HeadersMetric',
+            'class' => '\\' . HeadersMetric::class,
             'impact' => 7,
             'analysis' => 'The main H1 header does not contain the keyword phrase'
         ]
@@ -144,7 +149,7 @@ return [
             'keyword' => 'some'
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\Keyword\HeadersMetric',
+            'class' => '\\' . HeadersMetric::class,
             'impact' => 7,
             'analysis' => 'The main H1 header does not contain the keyword phrase'
         ]
@@ -160,7 +165,7 @@ return [
             'keyword' => 'some'
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\Keyword\HeadersMetric',
+            'class' => '\\' . HeadersMetric::class,
             'impact' => 3,
             'analysis' => 'The site H2 headers does not contain the keyword phrase'
         ]
@@ -175,7 +180,7 @@ return [
             'keyword' => 'pleasure'
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\KeywordDensityMetric',
+            'class' => '\\' . KeywordDensityMetric::class,
             'impact' => 0,
             'analysis' => 'Good! The key phrase is present in most popular keywords on the site'
         ]
@@ -189,7 +194,7 @@ return [
             'keyword' => 'pleasure'
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\KeywordDensityMetric',
+            'class' => '\\' . KeywordDensityMetric::class,
             'impact' => 4,
             'analysis' => 'You should consider adding your keyword to the site content'
         ]
@@ -203,7 +208,7 @@ return [
             'keyword' => 'lorem'
         ],
         [
-            'class' => '\SeoAnalyzer\Metric\Page\KeywordDensityMetric',
+            'class' => '\\' . KeywordDensityMetric::class,
             'impact' => 4,
             'analysis' => 'The key phrase is overused on the site'
         ]

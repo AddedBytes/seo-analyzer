@@ -2,6 +2,7 @@
 
 namespace Tests\TestCase;
 
+use InvalidArgumentException;
 use SeoAnalyzer\Analyzer;
 use SeoAnalyzer\HttpClient\Exception\HttpException;
 use ReflectionException;
@@ -21,7 +22,7 @@ class AnalyzerTest extends TestCase
         $analyzer = new Analyzer(null, $clientMock);
         $results = $analyzer->analyzeUrl('http://www.example.org');
         $this->assertTrue(is_array($results));
-        $this->assertEquals(count($analyzer->getMetrics()), count($results));
+        $this->assertSameSize($analyzer->getMetrics(), $results);
         $this->assertStringContainsString('You should avoid redirects', $results['PageRedirect']['analysis']);
         $this->assertArrayHasKey('analysis', current($results));
         $this->assertArrayHasKey('name', current($results));
@@ -54,7 +55,7 @@ class AnalyzerTest extends TestCase
         $analyzer = new Analyzer(null, $clientMock);
         $results = $analyzer->analyzeUrl('http://www.example.org', 'keyword');
         $this->assertTrue(is_array($results));
-        $this->assertEquals(count($analyzer->getMetrics()), count($results));
+        $this->assertSameSize($analyzer->getMetrics(), $results);
         $this->assertArrayHasKey('analysis', current($results));
         $this->assertArrayHasKey('name', current($results));
         $this->assertArrayHasKey('description', current($results));
@@ -63,13 +64,11 @@ class AnalyzerTest extends TestCase
     }
 
     /**
-     * @expectedException \SeoAnalyzer\HttpClient\Exception\HttpException
-     *
      * @throws ReflectionException
      */
     public function testAnalyzeUrlFailOnInvalidUrl()
-    {
-        $this->expectException(\SeoAnalyzer\HttpClient\Exception\HttpException::class);
+    {$this->expectException(HttpException::class);
+        $this->expectException(HttpException::class);
 
         (new Analyzer())->analyzeUrl('invalid-url');
     }
@@ -84,7 +83,7 @@ class AnalyzerTest extends TestCase
         $analyzer = new Analyzer(null, $clientMock);
         $results = $analyzer->analyzeFile(dirname(__DIR__) . '/data/test.html');
         $this->assertTrue(is_array($results));
-        $this->assertEquals(count($analyzer->getMetrics()), count($results));
+        $this->assertSameSize($analyzer->getMetrics(), $results);
         $this->assertArrayHasKey('analysis', current($results));
         $this->assertArrayHasKey('name', current($results));
         $this->assertArrayHasKey('description', current($results));
@@ -102,7 +101,7 @@ class AnalyzerTest extends TestCase
         $htmlString =  file_get_contents(dirname(__DIR__) . '/data/test.html');
         $results = $analyzer->analyzeHtml($htmlString);
         $this->assertTrue(is_array($results));
-        $this->assertEquals(count($analyzer->getMetrics()), count($results));
+        $this->assertSameSize($analyzer->getMetrics(), $results);
         $this->assertArrayHasKey('analysis', current($results));
         $this->assertArrayHasKey('name', current($results));
         $this->assertArrayHasKey('description', current($results));
@@ -121,7 +120,7 @@ class AnalyzerTest extends TestCase
         $analyzer = new Analyzer($page);
         $results = $analyzer->analyze();
         $this->assertTrue(is_array($results));
-        $this->assertEquals(count($analyzer->getMetrics()), count($results));
+        $this->assertSameSize($analyzer->getMetrics(), $results);
         $this->assertArrayHasKey('analysis', current($results));
         $this->assertArrayHasKey('name', current($results));
         $this->assertArrayHasKey('description', current($results));
@@ -130,11 +129,12 @@ class AnalyzerTest extends TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException No
+     * @throws ReflectionException
      */
     public function testAnalyzeFailOnNoPage()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);// No
+        $this->expectException(InvalidArgumentException::class);
 
         $analyzer = new Analyzer();
         $analyzer->analyze();
@@ -178,7 +178,7 @@ class AnalyzerTest extends TestCase
         $analyzer = new Analyzer($page);
         $results = $analyzer->analyze();
         $this->assertTrue(is_array($results));
-        $this->assertEquals(count($analyzer->getMetrics()), count($results));
+        $this->assertSameSize($analyzer->getMetrics(), $results);
         $this->assertArrayHasKey('analysis', current($results));
         $this->assertArrayHasKey('name', current($results));
         $this->assertArrayHasKey('description', current($results));
@@ -197,7 +197,7 @@ class AnalyzerTest extends TestCase
         $analyzer = new Analyzer($page);
         $results = $analyzer->analyze();
         $this->assertTrue(is_array($results));
-        $this->assertEquals(count($analyzer->getMetrics()), count($results));
+        $this->assertSameSize($analyzer->getMetrics(), $results);
         $this->assertArrayHasKey('analysis', current($results));
         $this->assertArrayHasKey('name', current($results));
         $this->assertArrayHasKey('description', current($results));

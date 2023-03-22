@@ -26,7 +26,7 @@ class MetricFactoryTest extends TestCase
      */
     public function testGetFailOnNotExistingClass()
     {
-        $this->expectException(\ReflectionException::class);
+        $this->expectException(ReflectionException::class);
 
         MetricFactory::get('page.not_existing', 4076);
     }

@@ -48,9 +48,6 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
 
     /**
      * Checks if keyword is not present in headers of specified type.
-     *
-     * @param string $headerType
-     * @return bool
      */
     private function isKeywordMissingInHeaders(string $headerType = 'h1'): bool
     {
@@ -59,7 +56,7 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
         }
         $keywordNotFound = true;
         foreach ($this->value[self::HEADERS][$headerType] as $headerContent) {
-            if (stripos($headerContent, $this->value['keyword']) !== false) {
+            if (stripos((string) $headerContent, (string) $this->value['keyword']) !== false) {
                 $keywordNotFound = false;
             }
         }

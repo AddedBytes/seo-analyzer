@@ -10,7 +10,6 @@ class SizeMetricTest extends TestCase
 {
     /**
      * @param $value
-     * @param array $expected
      * @throws ReflectionException
      * @dataProvider metricsDataProvider
      */
