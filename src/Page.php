@@ -68,7 +68,7 @@ class Page
     /**
      * Page constructor.
      * @param  string|null  $url
-     * @param  array|string  $config  Due to the backwards compatibility: locale if string, config if array
+     * @param  array|string|null  $config  Due to the backwards compatibility: locale if string, config if array
      * @param  ClientInterface|null  $client
      * @param  ParserInterface|null  $parser
      * @throws HttpException
@@ -225,9 +225,10 @@ class Page
 
     /**
      * Sets up and returns page metrics based on configuration specified.
+     * @param  array  $config
      * @return array
-     * @throws ReflectionException*@throws HttpException
      * @throws HttpException
+     * @throws ReflectionException *@throws HttpException
      */
     public function setMetrics(array $config): array
     {

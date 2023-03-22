@@ -17,33 +17,33 @@ class Analyzer
     /**
      * @var Page Web page to analyze
      */
-    public $page;
+    public Page $page;
 
     /**
      * @var string Default locale to use for translations
      */
-    public $locale = 'en_GB';
+    public string $locale = 'en_GB';
 
     /**
      * @var array Metrics array
      */
-    public $metrics = [];
+    public array $metrics = [];
 
     /**
      * @var ClientInterface
      */
-    public $client;
+    public ClientInterface|Client|null $client;
 
     /**
      * @var Translator
      */
-    public $translator;
+    public Translator $translator;
 
     /**
      * @param Page|null $page Page to analyze
      * @param ClientInterface|null $client
      */
-    public function __construct(Page $page = null, ClientInterface $client = null)
+    public function __construct(Page|null $page = null, ClientInterface|null $client = null)
     {
         $this->client = $client;
         if (empty($client)) {
@@ -57,13 +57,14 @@ class Analyzer
 
     /**
      * Analyzes page at specified url.
-     *
-     * @param string $url Url to analyze
-     * @param string|null $keyword
-     * @param string|null $locale
+     * @param  string  $url  Url to analyze
+     * @param  string|null  $keyword
+     * @param  string|null  $locale
+     * @return array
+     * @throws HttpException
      * @throws ReflectionException
      */
-    public function analyzeUrl(string $url, string $keyword = null, string $locale = null): array
+    public function analyzeUrl(string $url, string|null $keyword = null, string|null $locale = null): array
     {
         if (!empty($locale)) {
             $this->locale = $locale;
@@ -77,11 +78,13 @@ class Analyzer
 
     /**
      * Analyzes html document from file.
-     *
-     * @param string|null $locale
+     * @param  string  $filename
+     * @param  string|null  $locale
+     * @return array
+     * @throws HttpException
      * @throws ReflectionException
      */
-    public function analyzeFile(string $filename, string $locale = null): array
+    public function analyzeFile(string $filename, string|null $locale = null): array
     {
         $this->page = new Page(null, $locale, $this->client);
         $this->page->content = file_get_contents($filename);
@@ -90,11 +93,13 @@ class Analyzer
 
     /**
      * Analyzes html document from string.
-     *
-     * @param string|null $locale
+     * @param  string  $htmlString
+     * @param  string|null  $locale
+     * @return array
+     * @throws HttpException
      * @throws ReflectionException
      */
-    public function analyzeHtml(string $htmlString, string $locale = null): array
+    public function analyzeHtml(string $htmlString, string|null $locale = null): array
     {
         $this->page = new Page(null, $locale, $this->client);
         $this->page->content = $htmlString;
@@ -103,11 +108,11 @@ class Analyzer
 
     /**
      * Starts analysis of a Page.
-     *
      * @return array
      * @throws ReflectionException
+     * @throws HttpException
      */
-    public function analyze()
+    public function analyze(): array
     {
         if (empty($this->page)) {
             throw new InvalidArgumentException('No Page to analyze');
@@ -126,12 +131,12 @@ class Analyzer
 
     /**
      * Returns available metrics list for a Page
-     *
      * @throws ReflectionException
+     * @throws HttpException
      */
     public function getMetrics(): array
     {
-        return array_merge($this->page->getMetrics(), $this->getFilesMetrics());
+        return [...$this->page->getMetrics(), ...$this->getFilesMetrics()];
     }
 
     /**
@@ -155,9 +160,9 @@ class Analyzer
 
     /**
      * Downloads file from Page's host.
-     *
      * @param $url
      * @param $filename
+     * @return bool|string
      */
     protected function getFileContent($url, $filename): bool|string
     {
@@ -179,7 +184,7 @@ class Analyzer
     /**
      * Sets up the translator for current locale.
      */
-    public function setUpTranslator(string $locale)
+    public function setUpTranslator(string $locale): void
     {
         $this->translator = new Translator($locale);
         $this->translator->setFallbackLocales(['en_GB']);
@@ -193,8 +198,9 @@ class Analyzer
 
     /**
      * Formats metric analysis results.
-     *
-     * @param $results
+     * @param  MetricInterface  $metric
+     * @param  string  $results
+     * @return array
      */
     protected function formatResults(MetricInterface $metric, string $results): array
     {
