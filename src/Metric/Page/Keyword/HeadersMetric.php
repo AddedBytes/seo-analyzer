@@ -2,14 +2,15 @@
 
 namespace SeoAnalyzer\Metric\Page\Keyword;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 use SeoAnalyzer\Metric\KeywordBasedMetricInterface;
 
 class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterface
 {
-    public $description = 'Does the headers contain a key phrase?';
+    public string $description = 'Does the headers contain a key phrase?';
 
-    protected $results = [
+    protected array $results = [
         'no_keyword_h1' => [
             self::IMPACT  => 7,
             self::MESSAGE => 'The main H1 header does not contain the keyword phrase. Adding it could strongly improve SEO',
@@ -20,7 +21,7 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
         ],
     ];
 
-    public function __construct($inputData)
+    public function __construct(mixed $inputData)
     {
         parent::__construct($inputData);
         $this->setUpResultsConditions();
@@ -29,6 +30,7 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         return $this->checkTheResults('Good! The site headers contain the keyword phrase');
@@ -37,6 +39,7 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function setUpResultsConditions(array $conditions = []): bool
     {
         $conditions = [
