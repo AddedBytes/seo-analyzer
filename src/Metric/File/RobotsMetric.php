@@ -2,15 +2,17 @@
 
 namespace SeoAnalyzer\Metric\File;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class RobotsMetric extends AbstractMetric
 {
-    public $description = 'Does the site use proper robots.txt file?';
+    public string $description = 'Does the site use proper robots.txt file?';
 
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         if (empty($this->value)) {
