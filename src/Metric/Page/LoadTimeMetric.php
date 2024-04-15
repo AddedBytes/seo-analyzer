@@ -2,15 +2,17 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class LoadTimeMetric extends AbstractMetric
 {
-    public $description = 'Time used to load the page [sec.]';
+    public string $description = 'Time used to load the page [sec.]';
 
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         if ($this->value === false) {
