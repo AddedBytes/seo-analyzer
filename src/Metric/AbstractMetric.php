@@ -7,10 +7,10 @@ use ReflectionException;
 
 abstract class AbstractMetric implements MetricInterface
 {
-    final public const HEADERS = 'headers';
+    final public const HEADERS     = 'headers';
     final public const DESCRIPTION = 'description';
-    final public const IMPACT = 'impact';
-    final public const MESSAGE = 'message';
+    final public const IMPACT      = 'impact';
+    final public const MESSAGE     = 'message';
 
     /**
      * @var array Possible results configuration.
@@ -59,6 +59,7 @@ abstract class AbstractMetric implements MetricInterface
         foreach ($conditions as $key => $condition) {
             $this->results[$key]['condition'] = $condition;
         }
+
         return true;
     }
 
@@ -73,9 +74,11 @@ abstract class AbstractMetric implements MetricInterface
         foreach ($this->results as $result) {
             if ($this->isResultExpected($result['condition'])) {
                 $this->impact = $result['impact'];
+
                 return $result['message'];
             }
         }
+
         return $defaultMessage;
     }
 
@@ -83,8 +86,9 @@ abstract class AbstractMetric implements MetricInterface
     {
         if (is_callable($condition)) {
             return $condition($this->value);
-        } else {
-            return $condition;
         }
+
+        return $condition;
+
     }
 }
