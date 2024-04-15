@@ -1,36 +1,18 @@
 <?php
 
-/*
- * This file is part of PHPUnit.
- *
- * (c) Sebastian Bergmann <sebastian@phpunit.de>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types=1);
+
 namespace Tests;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase as PhpUnitTestCase;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use SeoAnalyzer\Cache;
 use SeoAnalyzer\HttpClient\ClientInterface;
 
-abstract class TestCase extends PhpUnitTestCase
+abstract class BasicTestCase extends BaseTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-        $cache = new Cache();
-        $cache->adapter->clear();
-    }
-
-    /**
-     * @param string|null $response Response body content to be returned
-     * @return MockObject|ClientInterface
-     */
-    public function getClientMock(string $response = null)
+    public function getClientMock(string|null $response = null): ClientInterface|MockObject
     {
         if (empty($response)) {
             $response = file_get_contents(__DIR__ . '/data/test.html');

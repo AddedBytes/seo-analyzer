@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\Feature;
+
 use SeoAnalyzer\Cache;
-use Symfony\Component\Cache\Exception\InvalidArgumentException;
 
 
 test('remember pass', function () {

@@ -1,9 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\Feature;
+
+use InvalidArgumentException;
 use SeoAnalyzer\Analyzer;
 use SeoAnalyzer\HttpClient\Exception\HttpException;
 use SeoAnalyzer\Metric\AbstractMetric;
 use SeoAnalyzer\Page;
+
 
 test('analyze url pass', function () {
     $clientMock = $this->getClientMock();

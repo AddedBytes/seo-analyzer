@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\Feature\Metric\Page\Content;
+
 use SeoAnalyzer\Metric\Page\Content\SizeMetric;
 
 test('analyze pass', function ($value, array $expected) {
@@ -9,7 +13,7 @@ test('analyze pass', function ($value, array $expected) {
     expect($expected['impact'])->toEqual($metric->impact);
 })->with('metricsDataProvider');
 
-dataset('metricsDataProvider', function () {
+dataset('metricsDataProvider', static function () {
     return [
         [false, ['message' => 'Can not read your page content', 'impact' => 10]],
         [0, ['message' => 'Looks that your site content is empty', 'impact' => 10]],

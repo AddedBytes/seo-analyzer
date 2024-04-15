@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\Feature;
+
 use SeoAnalyzer\Page;
 
 test('constructor', function () {

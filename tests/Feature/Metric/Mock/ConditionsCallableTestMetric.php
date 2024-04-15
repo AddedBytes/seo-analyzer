@@ -1,19 +1,21 @@
 <?php
 
-namespace Tests\TestCase\Metric\Mock;
+declare(strict_types=1);
+
+namespace Tests\Feature\Metric\Mock;
 
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class ConditionsCallableTestMetric extends AbstractMetric
 {
-    public $description = 'Test metric';
+    public string $description = 'Test metric';
 
     public function __construct($inputData)
     {
         parent::__construct($inputData);
         $this->results = [
             'test_condition' => [
-                'condition' => function ($value) {
+                'condition' => static function ($value) {
                     if (empty($value)) {
                         return true;
                     }
@@ -25,9 +27,6 @@ class ConditionsCallableTestMetric extends AbstractMetric
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function analyze(): string
     {
         return $this->checkTheResults('Success test metric output message');

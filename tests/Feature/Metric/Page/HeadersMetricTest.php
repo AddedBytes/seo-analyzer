@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\Feature\Metric;
+
 use SeoAnalyzer\Metric\Page\HeadersMetric;
 
 test('analyze pass', function ($value, array $expected) {
@@ -9,7 +13,7 @@ test('analyze pass', function ($value, array $expected) {
     expect($expected['impact'])->toEqual($metric->impact);
 })->with('metricsDataProvider');
 
-dataset('metricsDataProvider', function () {
+dataset('metricsDataProvider', static function () {
     return [
         [[], ['message' => 'Looks the site has no headers at all. You should rebuild your page', 'impact' => 7]],
         [['h2' => ['Lorem ipsum']], ['message' => 'There is no H1 header on the site. You should', 'impact' => 5]],

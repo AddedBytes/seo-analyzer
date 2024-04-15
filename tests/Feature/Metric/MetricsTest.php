@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\Feature\Metric;
+
 use SeoAnalyzer\Analyzer;
 use SeoAnalyzer\Metric\MetricFactory;
-use Symfony\Component\Translation\Translator;
 
 beforeEach(function () {
     $analyzer = new Analyzer();

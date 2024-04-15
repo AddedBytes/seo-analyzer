@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\Feature\Metric\Page\Keyword;
+
 use SeoAnalyzer\Metric\Page\Keyword\HeadersMetric;
 
 test('analyze pass', function ($value, array $expected) {
@@ -9,7 +13,7 @@ test('analyze pass', function ($value, array $expected) {
     expect($expected['impact'])->toEqual($metric->impact);
 })->with('metricsDataProvider');
 
-dataset('metricsDataProvider', function () {
+dataset('metricsDataProvider', static function () {
     return [
 //            [[], ['message' => 'The main H1 header does not contain the keyword phrase.', 'impact' => 7]],
 //            [

@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\TestCase\Metric;
+
 use SeoAnalyzer\Metric\Page\KeywordDensityMetric;
 use SeoAnalyzer\Metric\Page\HeadersKeywordDensityMetric;
 use SeoAnalyzer\Metric\Page\KeywordMetric;
 use SeoAnalyzer\Metric\Page\Keyword\HeadersMetric;
+
 return [
     [
         'page.keywordDensity',

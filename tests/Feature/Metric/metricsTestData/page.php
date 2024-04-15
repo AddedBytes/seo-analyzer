@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\TestCase\Metric;
+
 use SeoAnalyzer\Metric\Page\SSLMetric;
 use SeoAnalyzer\Metric\Page\Content\SizeMetric;
 use SeoAnalyzer\Metric\Page\Content\RatioMetric;

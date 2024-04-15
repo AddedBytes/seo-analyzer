@@ -1,7 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\TestCase\Metric;
+
 use SeoAnalyzer\Metric\File\RobotsMetric;
 use SeoAnalyzer\Metric\File\SitemapMetric;
+
 return [
     [
         'file.robots',
