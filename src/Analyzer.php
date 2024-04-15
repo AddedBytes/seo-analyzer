@@ -41,7 +41,6 @@ class Analyzer
 
     /**
      * @param Page|null $page Page to analyze
-     * @param ClientInterface|null $client
      */
     public function __construct(Page|null $page = null, ClientInterface|null $client = null)
     {
@@ -50,7 +49,7 @@ class Analyzer
             $this->client = new Client();
         }
 
-        if (!empty($page)) {
+        if (! empty($page)) {
             $this->page = $page;
         }
     }
@@ -58,51 +57,48 @@ class Analyzer
     /**
      * Analyzes page at specified url.
      * @param  string  $url  Url to analyze
-     * @param  string|null  $keyword
-     * @param  string|null  $locale
      * @return array
      * @throws HttpException
      * @throws ReflectionException
      */
     public function analyzeUrl(string $url, string|null $keyword = null, string|null $locale = null): array
     {
-        if (!empty($locale)) {
+        if (! empty($locale)) {
             $this->locale = $locale;
         }
         $this->page = new Page($url, $locale, $this->client);
-        if (!empty($keyword)) {
+        if (! empty($keyword)) {
             $this->page->keyword = $keyword;
         }
+
         return $this->analyze();
     }
 
     /**
      * Analyzes html document from file.
-     * @param  string  $filename
-     * @param  string|null  $locale
      * @return array
      * @throws HttpException
      * @throws ReflectionException
      */
     public function analyzeFile(string $filename, string|null $locale = null): array
     {
-        $this->page = new Page(null, $locale, $this->client);
+        $this->page          = new Page(null, $locale, $this->client);
         $this->page->content = file_get_contents($filename);
+
         return $this->analyze();
     }
 
     /**
      * Analyzes html document from string.
-     * @param  string  $htmlString
-     * @param  string|null  $locale
      * @return array
      * @throws HttpException
      * @throws ReflectionException
      */
     public function analyzeHtml(string $htmlString, string|null $locale = null): array
     {
-        $this->page = new Page(null, $locale, $this->client);
+        $this->page          = new Page(null, $locale, $this->client);
         $this->page->content = $htmlString;
+
         return $this->analyze();
     }
 
@@ -126,6 +122,7 @@ class Analyzer
                 $results[$metric->name] = $this->formatResults($metric, $analysisResult);
             }
         }
+
         return $results;
     }
 
@@ -154,7 +151,7 @@ class Analyzer
             'sitemap' => MetricFactory::get('file.sitemap', $this->getFileContent(
                 $this->page->getFactor('url.parsed.scheme') . '://' . $this->page->getFactor('url.parsed.host'),
                 'sitemap.xml'
-            ))
+            )),
         ];
     }
 
@@ -166,18 +163,20 @@ class Analyzer
      */
     protected function getFileContent($url, $filename): bool|string
     {
-        $cache = new Cache();
+        $cache    = new Cache();
         $cacheKey = 'file_content_' . base64_encode($url . '/' . $filename);
         if ($value = $cache->get($cacheKey)) {
             return $value;
         }
+
         try {
             $response = $this->client->get($url . '/' . $filename);
-            $content = $response->getBody()->getContents();
+            $content  = $response->getBody()->getContents();
         } catch (HttpException) {
             return false;
         }
         $cache->set($cacheKey, $content, 300);
+
         return $content;
     }
 
@@ -198,8 +197,6 @@ class Analyzer
 
     /**
      * Formats metric analysis results.
-     * @param  MetricInterface  $metric
-     * @param  string  $results
      * @return array
      */
     protected function formatResults(MetricInterface $metric, string $results): array
@@ -207,11 +204,12 @@ class Analyzer
         if (empty($this->translator)) {
             $this->setUpTranslator($this->locale);
         }
+
         return [
-            'analysis' => $this->translator->trans($results),
-            'name' => $metric->name,
-            'description' => $this->translator->trans($metric->description),
-            'value' => $metric->value,
+            'analysis'        => $this->translator->trans($results),
+            'name'            => $metric->name,
+            'description'     => $this->translator->trans($metric->description),
+            'value'           => $metric->value,
             'negative_impact' => $metric->impact,
         ];
     }
