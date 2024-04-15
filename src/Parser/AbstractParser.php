@@ -19,7 +19,7 @@ abstract class AbstractParser implements ParserInterface
     public function __construct(string $html = null)
     {
         $this->dom = new DOMDocument();
-        if (!empty($html)) {
+        if (! empty($html)) {
             $this->setContent($html);
         }
     }
