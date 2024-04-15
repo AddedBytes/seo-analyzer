@@ -2,23 +2,23 @@
 
 namespace SeoAnalyzer;
 
+use ReflectionException;
 use SeoAnalyzer\HttpClient\Client;
 use SeoAnalyzer\HttpClient\ClientInterface;
 use SeoAnalyzer\HttpClient\Exception\HttpException;
 use SeoAnalyzer\Metric\KeywordBasedMetricInterface;
 use SeoAnalyzer\Metric\MetricFactory;
-use ReflectionException;
 use SeoAnalyzer\Parser\Parser;
 use SeoAnalyzer\Parser\ParserInterface;
 
 class Page
 {
-    final public const LOCALE = 'locale';
-    final public const STOP_WORDS = 'stop_words';
-    final public const KEYWORD = 'keyword';
-    final public const IMPACT = 'impact';
-    final public const TEXT = 'text';
-    final public const HEADERS = 'headers';
+    final public const string LOCALE     = 'locale';
+    final public const string STOP_WORDS = 'stop_words';
+    final public const string KEYWORD    = 'keyword';
+    final public const string IMPACT     = 'impact';
+    final public const string TEXT       = 'text';
+    final public const string HEADERS    = 'headers';
 
     /**
      * @var string URL of web page
@@ -67,10 +67,7 @@ class Page
 
     /**
      * Page constructor.
-     * @param  string|null  $url
      * @param  array|string|null  $config  Due to the backwards compatibility: locale if string, config if array
-     * @param  ClientInterface|null  $client
-     * @param  ParserInterface|null  $parser
      * @throws HttpException
      */
     public function __construct(
@@ -85,11 +82,11 @@ class Page
         if (is_string($config)) { // Due to the backwards compatibility
             $config = [self::LOCALE => $config];
         }
-        if ($config === null) { // Due to the backwards compatibility
+        if ($config === []) { // Due to the backwards compatibility
             $config = [self::LOCALE => $this->locale];
         }
         $this->setConfig($config);
-        if (!empty($url)) {
+        if (! empty($url)) {
             $this->url = $this->setUpUrl($url);
             $this->getContent();
         }
@@ -104,7 +101,7 @@ class Page
     {
         $parsedUrl = parse_url($url);
         if (empty($parsedUrl['scheme'])) {
-            $url = 'http://' . $url;
+            $url       = 'http://' . $url;
             $parsedUrl = parse_url($url);
         }
         $this->setFactor(Factor::URL_PARSED, $parsedUrl);
@@ -116,6 +113,7 @@ class Page
             Factor::URL_LENGTH,
             strlen($this->getFactor(Factor::URL_PARSED_HOST) . $this->getFactor(Factor::URL_PARSED_PATH))
         );
+
         return $url;
     }
 
@@ -131,7 +129,6 @@ class Page
             }
         }
     }
-
 
     /**
      * Downloads page content from URL specified and sets up some base metrics.
@@ -156,18 +153,20 @@ class Page
     protected function getPageLoadFactors(int $ttl = 300): array
     {
         $cache = new Cache();
+
         return $cache->remember('page_content_' . base64_encode($this->url), function () {
             $starTime = microtime(true);
             $response = $this->client->get($this->url);
             $loadTime = number_format((microtime(true) - $starTime), 4);
             $redirect = null;
-            if (!empty($redirects = $response->getHeader('X-Guzzle-Redirect-History'))) {
+            if (! empty($redirects = $response->getHeader('X-Guzzle-Redirect-History'))) {
                 $redirect = end($redirects);
             }
+
             return [
-                'content' => $response->getBody()->getContents(),
-                'time' => $loadTime,
-                'redirect' => $redirect
+                'content'  => $response->getBody()->getContents(),
+                'time'     => $loadTime,
+                'redirect' => $redirect,
             ];
         }, $ttl);
     }
@@ -181,11 +180,12 @@ class Page
     protected function getSSLResponseCode(int $ttl = 300): int|false
     {
         $cache = new Cache();
+
         return $cache->remember(
             'https_response_code_' . base64_encode('https://' . $this->url),
             function () {
                 try {
-                    return $this->client->get(str_replace('http://', 'https://', $this->url))->getStatusCode() ?? false;
+                    return $this->client->get(str_replace('http://', 'https://', $this->url))->getStatusCode();
                 } catch (HttpException) {
                     return false;
                 }
@@ -205,11 +205,11 @@ class Page
         }
         $this->parser->setContent($this->content);
         $this->setFactors([
-            Factor::META_META => $this->parser->getMeta(),
-            Factor::HEADERS => $this->parser->getHeaders(),
+            Factor::META_META  => $this->parser->getMeta(),
+            Factor::HEADERS    => $this->parser->getHeaders(),
             Factor::META_TITLE => $this->parser->getTitle(),
-            Factor::TEXT => $this->parser->getText(),
-            Factor::ALTS => $this->parser->getAlts()
+            Factor::TEXT       => $this->parser->getText(),
+            Factor::ALTS       => $this->parser->getAlts(),
         ]);
     }
 
@@ -220,12 +220,12 @@ class Page
     public function getMetrics(): array
     {
         $this->initializeFactors();
+
         return $this->setUpMetrics($this->config['factors']);
     }
 
     /**
      * Sets up and returns page metrics based on configuration specified.
-     * @param  array  $config
      * @return array
      * @throws HttpException
      * @throws ReflectionException *@throws HttpException
@@ -233,6 +233,7 @@ class Page
     public function setMetrics(array $config): array
     {
         $this->initializeFactors();
+
         return $this->setUpMetrics($config);
     }
 
@@ -245,7 +246,7 @@ class Page
             $this->parse();
         }
         $this->setUpContentFactors();
-        if (!empty($this->keyword)) {
+        if (! empty($this->keyword)) {
             $this->setUpContentKeywordFactors($this->keyword);
         }
     }
@@ -256,22 +257,22 @@ class Page
     public function setUpContentFactors(): void
     {
         $this->setFactors([
-            Factor::CONTENT_HTML => $this->content,
-            Factor::CONTENT_SIZE => strlen($this->content),
+            Factor::CONTENT_HTML  => $this->content,
+            Factor::CONTENT_SIZE  => strlen($this->content),
             Factor::CONTENT_RATIO => [
-                'content_size' => strlen(preg_replace('!\s+!', ' ', (string) $this->getFactor(Factor::TEXT))),
-                'code_size' => strlen($this->content)
+                'content_size' => strlen((string) preg_replace('!\s+!', ' ', (string) $this->getFactor(Factor::TEXT))),
+                'code_size'    => strlen($this->content),
             ],
             Factor::DENSITY_PAGE => [
-                self::TEXT => $this->getFactor(Factor::TEXT),
-                self::LOCALE => $this->locale,
-                self::STOP_WORDS => $this->stopWords
+                self::TEXT       => $this->getFactor(Factor::TEXT),
+                self::LOCALE     => $this->locale,
+                self::STOP_WORDS => $this->stopWords,
             ],
             Factor::DENSITY_HEADERS => [
-                self::HEADERS => $this->getFactor(Factor::HEADERS),
-                self::LOCALE => $this->locale,
-                self::STOP_WORDS => $this->stopWords
-            ]
+                self::HEADERS    => $this->getFactor(Factor::HEADERS),
+                self::LOCALE     => $this->locale,
+                self::STOP_WORDS => $this->stopWords,
+            ],
         ]);
     }
 
@@ -282,36 +283,36 @@ class Page
     {
         $this->setFactors([
             Factor::KEYWORD_URL => [
-                self::TEXT => $this->getFactor(Factor::URL_PARSED_HOST),
+                self::TEXT    => $this->getFactor(Factor::URL_PARSED_HOST),
                 self::KEYWORD => $keyword,
-                self::IMPACT => 5,
-                'type' => 'URL'
+                self::IMPACT  => 5,
+                'type'        => 'URL',
             ],
             Factor::KEYWORD_PATH => [
-                self::TEXT => $this->getFactor(Factor::URL_PARSED_PATH),
+                self::TEXT    => $this->getFactor(Factor::URL_PARSED_PATH),
                 self::KEYWORD => $keyword,
-                self::IMPACT => 3,
-                'type' => 'UrlPath'
+                self::IMPACT  => 3,
+                'type'        => 'UrlPath',
             ],
             Factor::KEYWORD_TITLE => [
-                self::TEXT => $this->getFactor(Factor::TITLE),
+                self::TEXT    => $this->getFactor(Factor::TITLE),
                 self::KEYWORD => $keyword,
-                self::IMPACT => 5,
-                'type' => 'Title'
+                self::IMPACT  => 5,
+                'type'        => 'Title',
             ],
             Factor::KEYWORD_DESCRIPTION => [
-                self::TEXT => $this->getFactor(Factor::META_DESCRIPTION),
+                self::TEXT    => $this->getFactor(Factor::META_DESCRIPTION),
                 self::KEYWORD => $keyword,
-                self::IMPACT => 3,
-                'type' => 'Description'
+                self::IMPACT  => 3,
+                'type'        => 'Description',
             ],
             Factor::KEYWORD_HEADERS => [self::HEADERS => $this->getFactor(Factor::HEADERS), self::KEYWORD => $keyword],
             Factor::KEYWORD_DENSITY => [
-                self::TEXT => $this->getFactor(Factor::TEXT),
-                self::LOCALE => $this->locale,
+                self::TEXT       => $this->getFactor(Factor::TEXT),
+                self::LOCALE     => $this->locale,
                 self::STOP_WORDS => $this->stopWords,
-                self::KEYWORD => $keyword
-            ]
+                self::KEYWORD    => $keyword,
+            ],
         ]);
     }
 
@@ -332,10 +333,11 @@ class Page
                 $factor = key($factor);
             }
             $metricObject = MetricFactory::get('page.' . $metric, $this->getFactor($factor));
-            if (!$metricObject instanceof KeywordBasedMetricInterface || !empty($this->keyword)) {
+            if (! $metricObject instanceof KeywordBasedMetricInterface || ! empty($this->keyword)) {
                 $metrics['page_' . str_replace('.', '_', (string) $metric)] = $metricObject;
             }
         }
+
         return $metrics;
     }
 
@@ -346,6 +348,7 @@ class Page
         } else {
             $this->factors[$name] = $value;
         }
+
         return $this->factors;
     }
 
@@ -362,6 +365,7 @@ class Page
         foreach (explode('.', $path) as $step) {
             $loc = &$loc[$step];
         }
+
         return $loc = $val;
     }
 
@@ -377,7 +381,6 @@ class Page
 
     /**
      * Returns factor data collected by it's key name.
-     * @param string $name
      * @return mixed
      */
     public function getFactor(string $name): mixed
@@ -385,27 +388,28 @@ class Page
         if (str_contains($name, '.')) {
             return $this->getNestedFactor($name);
         }
-        if (!empty($this->factors[$name])) {
+        if (! empty($this->factors[$name])) {
             return $this->factors[$name];
         }
+
         return false;
     }
 
     /**
      * Returns factor data collected by it's key name.
-     * @param string $name
      * @return mixed
      */
     protected function getNestedFactor(string $name): mixed
     {
-        $keys = explode('.', $name);
+        $keys  = explode('.', $name);
         $value = $this->factors;
         foreach ($keys as $innerKey) {
-            if (!array_key_exists($innerKey, $value)) {
+            if (! array_key_exists($innerKey, $value)) {
                 return false;
             }
             $value = $value[$innerKey];
         }
+
         return $value;
     }
 }
