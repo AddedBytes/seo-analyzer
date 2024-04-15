@@ -3,50 +3,36 @@
 namespace SeoAnalyzer\Metric;
 
 use ReflectionClass;
-use ReflectionException;
 
 abstract class AbstractMetric implements MetricInterface
 {
-    final public const HEADERS     = 'headers';
-    final public const DESCRIPTION = 'description';
-    final public const IMPACT      = 'impact';
-    final public const MESSAGE     = 'message';
+    final public const string HEADERS     = 'headers';
+    final public const string DESCRIPTION = 'description';
+    final public const string IMPACT      = 'impact';
+    final public const string MESSAGE     = 'message';
 
     /**
      * @var array Possible results configuration.
      */
-    protected $results = [];
+    protected array $results = [];
 
     /**
      * @var string Metric name
      */
-    public $name;
+    public string|array $name;
 
     /**
      * @var string Metric description
      */
-    public $description;
+    public string $description;
 
-    /**
-     * @var mixed Metric value
-     */
-    public $value;
+    public int $impact = 0;
 
-    /**
-     * @var int Negative impact on SEO. Higher value then bigger negative impact.
-     */
-    public $impact = 0;
-
-    /**
-     * @param mixed $inputData Input data to compute metric value
-     * @throws ReflectionException
-     */
-    public function __construct(mixed $inputData)
+    public function __construct(public mixed $value)
     {
         if (empty($this->name)) {
             $this->name = str_replace(['SeoAnalyzer\\', 'Metric', '\\'], '', (new ReflectionClass($this))->getName());
         }
-        $this->value = $inputData;
     }
 
     /**
@@ -82,7 +68,7 @@ abstract class AbstractMetric implements MetricInterface
         return $defaultMessage;
     }
 
-    private function isResultExpected($condition)
+    private function isResultExpected(mixed $condition): bool
     {
         if (is_callable($condition)) {
             return $condition($this->value);
