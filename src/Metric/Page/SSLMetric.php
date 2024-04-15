@@ -2,15 +2,17 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class SSLMetric extends AbstractMetric
 {
-    public $description = 'Does the site use an encrypted connection?';
+    public string $description = 'Does the site use an encrypted connection?';
 
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         if (empty($this->value)) {
