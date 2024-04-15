@@ -11,11 +11,13 @@ class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
      */
     public function analyze(): string
     {
-        if (!empty($overusedWords = $this->getHeadersOverusedWords())) {
-            $this->impact = 4;
+        if (! empty($overusedWords = $this->getHeadersOverusedWords())) {
+            $this->impact            = 4;
             $this->value['overused'] = $overusedWords;
+
             return 'There are some overused keywords in headers. You should consider limiting the use of those phrases';
         }
+
         return 'The keywords density in headers looks good';
     }
 
@@ -24,13 +26,14 @@ class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
      */
     protected function getHeadersOverusedWords(): array
     {
-        $this->value = $this->getHeadersKeywords();
+        $this->value   = $this->getHeadersKeywords();
         $overusedWords = [];
-        if (!empty($this->value)) {
+        if (! empty($this->value)) {
             foreach ($this->value as $keywords) {
                 $overusedWords = array_merge($overusedWords, $this->getOverusedKeywords($keywords, 35, 3));
             }
         }
+
         return $overusedWords;
     }
 
@@ -40,7 +43,7 @@ class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
     protected function getHeadersKeywords(int $maxPhaseWords = 3): array
     {
         $keywords = [];
-        if (!empty($this->value['headers'])) {
+        if (! empty($this->value['headers'])) {
             foreach ($this->value['headers'] as $header => $headersContent) {
                 $keywords[$header] = $this->analyseKeywords(
                     implode(" ", $headersContent),
@@ -49,6 +52,7 @@ class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
                 );
             }
         }
+
         return $keywords;
     }
 }
