@@ -18,6 +18,7 @@ class ExampleCustomParser extends Parser
                 ];
             }
         }
+
         return $alts;
     }
 }
