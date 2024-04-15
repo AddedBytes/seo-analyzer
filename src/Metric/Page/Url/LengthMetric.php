@@ -2,15 +2,17 @@
 
 namespace SeoAnalyzer\Metric\Page\Url;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class LengthMetric extends AbstractMetric
 {
-    public $description = 'The size of the page URL';
+    public string $description = 'The size of the page URL';
 
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         if ($this->value > 40) {
