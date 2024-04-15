@@ -2,15 +2,17 @@
 
 namespace SeoAnalyzer\Metric\File;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class SitemapMetric extends AbstractMetric
 {
-    public $description = 'Does the site use a site map file "sitemap.xml"?';
+    public string $description = 'Does the site use a site map file "sitemap.xml"?';
 
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         if (empty($this->value)) {
