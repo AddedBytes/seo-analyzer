@@ -4,3 +4,12 @@
 .phpunit.result.cache
 /composer.lock
 .DS_Store
+*.log
+/.php-cs-fixer.cache
+/.phpstorm.meta.php
+/build/*
+/node_modules
+/storage
+ray.php
+/build/
+/phpstan-baseline.neon
