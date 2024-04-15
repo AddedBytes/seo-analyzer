@@ -2,15 +2,17 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class AltsMetric extends AbstractMetric
 {
-    public $description = 'Alternate texts for images';
+    public string $description = 'Alternate texts for images';
 
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         if (empty($this->value)) {
