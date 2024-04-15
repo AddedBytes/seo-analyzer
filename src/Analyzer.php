@@ -14,38 +14,17 @@ use Symfony\Component\Translation\Translator;
 
 class Analyzer
 {
-    /**
-     * @var Page Web page to analyze
-     */
     public Page $page;
 
-    /**
-     * @var string Default locale to use for translations
-     */
     public string $locale = 'en_GB';
 
-    /**
-     * @var array Metrics array
-     */
     public array $metrics = [];
 
-    /**
-     * @var ClientInterface
-     */
-    public ClientInterface|Client|null $client;
-
-    /**
-     * @var Translator
-     */
     public Translator $translator;
 
-    /**
-     * @param Page|null $page Page to analyze
-     */
-    public function __construct(Page|null $page = null, ClientInterface|null $client = null)
+    public function __construct(Page|null $page = null, public ClientInterface|Client|null $client = null)
     {
-        $this->client = $client;
-        if (empty($client)) {
+        if (empty($this->client)) {
             $this->client = new Client();
         }
 
@@ -161,7 +140,7 @@ class Analyzer
      * @param $filename
      * @return bool|string
      */
-    protected function getFileContent($url, $filename): bool|string
+    protected function getFileContent(string $url, string $filename): bool|string
     {
         $cache    = new Cache();
         $cacheKey = 'file_content_' . base64_encode($url . '/' . $filename);
