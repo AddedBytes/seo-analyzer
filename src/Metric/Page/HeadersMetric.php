@@ -2,13 +2,14 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class HeadersMetric extends AbstractMetric
 {
-    public $description = 'Html headers metric';
+    public string $description = 'Html headers metric';
 
-    protected $results = [
+    protected array $results = [
         'no_headers' => [
             self::IMPACT  => 7,
             self::MESSAGE => 'Looks the site has no headers at all.' .
@@ -44,7 +45,7 @@ class HeadersMetric extends AbstractMetric
         ],
     ];
 
-    public function __construct($inputData)
+    public function __construct(mixed $inputData)
     {
         parent::__construct($inputData);
         $this->setUpResultsConditions();
@@ -53,6 +54,7 @@ class HeadersMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         return $this->checkTheResults('The headers structure on the site looks very good');
@@ -61,6 +63,7 @@ class HeadersMetric extends AbstractMetric
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function setUpResultsConditions(array $conditions = []): bool
     {
         $conditions = [
