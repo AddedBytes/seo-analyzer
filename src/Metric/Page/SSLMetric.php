@@ -15,8 +15,10 @@ class SSLMetric extends AbstractMetric
     {
         if (empty($this->value)) {
             $this->impact = 3;
+
             return 'You should use encrypted connection, as this could have strong impact on SEO';
         }
+
         return 'yes';
     }
 }
