@@ -17,8 +17,10 @@ class KeywordMetric extends AbstractMetric implements KeywordBasedMetricInterfac
         $this->name = 'Keyword' . $this->value['type'];
         if (stripos((string) $this->value['text'], (string) $this->value['keyword']) === false) {
             $this->impact = $this->value['impact'];
+
             return 'Can not find the keyword phrase. Adding it could improve SEO';
         }
+
         return 'Good! Found the keyword phrase';
     }
 }
