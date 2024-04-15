@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer;
 
+use DateInterval;
 use Exception;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
@@ -13,8 +16,9 @@ class Cache
      */
     public Psr16Cache $adapter;
 
-    public function __construct(string|null $adapterClass = null, $ttl = 300)
+    public function __construct(string|null $adapterClass = null, int|null $ttl = null)
     {
+        $ttl ??= 300;
         if (empty($adapterClass)) {
             $adapterClass = FilesystemAdapter::class;
         }
@@ -71,7 +75,7 @@ class Cache
      * @param $value
      * @param $ttl
      */
-    public function set(string $cacheKey, $value, $ttl = null): bool
+    public function set(string $cacheKey, mixed $value, DateInterval|int|null $ttl = null): bool
     {
         try {
             return $this->adapter->set($cacheKey, $value, $ttl);
