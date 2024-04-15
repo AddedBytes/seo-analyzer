@@ -7,18 +7,16 @@ use SeoAnalyzer\Metric\KeywordBasedMetricInterface;
 
 abstract class AbstractKeywordDensityMetric extends AbstractMetric implements KeywordBasedMetricInterface
 {
-    public $description = 'Keyword density';
+    public string $description = 'Keyword density';
 
-    public $keyword;
+    public mixed $keyword;
 
-    public function __construct($inputData)
+    public function __construct(mixed $inputData)
     {
-        if (! $inputData) {
-            // Unit tests fail here because sometimes inputDAta is not an array
+        if (! is_array($inputData) || $inputData === []) {
+            // Unit tests fail here because sometimes inputData is not an array,
             // so set some default params for when there's a breaking input
-            $inputData = [
-                'locale' => 'en_GB',
-            ];
+            $inputData = ['locale' => 'en_GB',];
         }
         if (empty($inputData['stop_words'])) {
             $stopWordsFilename = dirname(__DIR__, 3) . '/locale/' . $inputData['locale'] . '_stop_words.yml';
@@ -33,41 +31,22 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
     }
 
     /**
-     * Cleans the text input and returns array of words.
-     *
-     * @return array
-     */
-    protected function getWords(string $text, array $stopWords = []): array
-    {
-        $text      = html_entity_decode($text);
-        $stopWords = array_map(fn ($word) => trim((string) $word), $stopWords);
-        $stopWords = array_merge($stopWords, ['\'', '"', "-", "_"]);
-        $text      = strtolower((string) preg_replace('/[^a-zA-Z0-9\s]/', '', $text));
-        $words     = str_word_count($text, 1);
-        $words     = array_diff($words, $stopWords);
-
-        return array_values(array_filter($words, fn ($word) => strlen((string) $word) > 2));
-    }
-
-    /**
      * Returns most popular keywords used in text with it's use percentage.
      *
      * @param int $maxPhraseWords
      * @param int $minCount Minimum keyword count
      * @return array
      */
-    protected function analyseKeywords(string $text, array $stopWords, $maxPhraseWords = 4, $minCount = 0): array
+    protected function analyseKeywords(string $text, array $stopWords, int|null $maxPhraseWords = null, int|null $minCount = null): array
     {
+        $maxPhraseWords ??= 4;
+        $minCount       ??= 0;
         $words               = $this->getWords($text, $stopWords);
         $keywords            = $this->getKeywords($words, $maxPhraseWords);
         $keywordsPercentages = [];
         for ($phraseWordCount = 1; $phraseWordCount <= $maxPhraseWords; $phraseWordCount++) {
             if (! empty($keywords[$phraseWordCount])) {
-                $keywordsPercentages[$phraseWordCount] = $this->calculateKeywordsPercentage(
-                    $keywords[$phraseWordCount],
-                    $minCount,
-                    10
-                );
+                $keywordsPercentages[$phraseWordCount] = $this->calculateKeywordsPercentage($keywords[$phraseWordCount], $minCount, 10);
             }
         }
 
@@ -75,28 +54,22 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
     }
 
     /**
-     * Calculates the percentage of keywords frequency.
+     * Cleans the text input and returns array of words.
      *
      * @return array
      */
-    protected function calculateKeywordsPercentage(array $keywords, int $minCount = 0, int $limit = 10): array
+    protected function getWords(string $text, array $stopWords = []): array
     {
-        $keywords = array_count_values($keywords);
-        arsort($keywords);
-        $keywords      = array_filter($keywords, fn ($count) => $count >= $minCount);
-        $keywordsCount = array_sum($keywords);
-        foreach ($keywords as $keyword => $count) {
-            $keywords[$keyword] = round($count / $keywordsCount * 100);
-        }
+        $text      = html_entity_decode($text);
+        $stopWords = array_map(static fn (string $word) => trim((string)$word), $stopWords);
+        $stopWords = array_merge($stopWords, ['\'', '"', "-", "_"]);
+        $text      = strtolower((string)preg_replace('/[^a-zA-Z0-9\s]/', '', $text));
+        $words     = str_word_count($text, 1);
+        $words     = array_diff($words, $stopWords);
 
-        return array_slice($keywords, 0, $limit);
+        return array_values(array_filter($words, static fn (string $word) => strlen((string)$word) > 2));
     }
 
-    /**
-     * Prepares keyword phrases form texts's words.
-     *
-     * @return array
-     */
     protected function getKeywords(array $words, int $maxPhraseWords): array
     {
         $count    = count($words);
@@ -114,6 +87,21 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
         }
 
         return $keywords;
+    }
+
+    protected function calculateKeywordsPercentage(array $keywords, int|null $min_count = null, int|null $limit = null): array
+    {
+        $min_count ??= 0;
+        $limit     ??= 10;
+        $keywords = array_count_values($keywords);
+        arsort($keywords);
+        $keywords      = array_filter($keywords, static fn (int $count) => $count >= (int)$min_count);
+        $keywordsCount = array_sum($keywords);
+        foreach ($keywords as $keyword => $count) {
+            $keywords[$keyword] = round($count / $keywordsCount * 100);
+        }
+
+        return array_slice($keywords, 0, $limit);
     }
 
     /**
