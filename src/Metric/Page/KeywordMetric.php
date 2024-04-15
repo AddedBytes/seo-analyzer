@@ -2,16 +2,18 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 use SeoAnalyzer\Metric\KeywordBasedMetricInterface;
 
 class KeywordMetric extends AbstractMetric implements KeywordBasedMetricInterface
 {
-    public $description = 'Does it contain a key phrase?';
+    public string $description = 'Does it contain a key phrase?';
 
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         $this->name = 'Keyword' . $this->value['type'];
