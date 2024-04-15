@@ -2,15 +2,17 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class RedirectMetric extends AbstractMetric
 {
-    public $description = 'Does the main URL redirects to other?';
+    public string $description = 'Does the main URL redirects to other?';
 
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         if (! empty($this->value)) {
