@@ -2,13 +2,14 @@
 
 namespace SeoAnalyzer\Metric\Page\Content;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class RatioMetric extends AbstractMetric
 {
-    public $description = 'The ratio of page content to page code [%]';
+    public string $description = 'The ratio of page content to page code [%]';
 
-    public function __construct($inputData)
+    public function __construct(mixed $inputData)
     {
         $ratio = 0;
         if (! empty($inputData['code_size'])) {
@@ -20,6 +21,7 @@ class RatioMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         if ($this->value < 10) {
