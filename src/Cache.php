@@ -3,7 +3,6 @@
 namespace SeoAnalyzer;
 
 use Exception;
-use Psr\SimpleCache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 
@@ -37,6 +36,7 @@ class Cache
                 $this->set($key, $value, $ttl);
             }
         }
+
         return $value;
     }
 
@@ -48,6 +48,7 @@ class Cache
     public function get(string $cacheKey): mixed
     {
         $value = false;
+
         try {
             $hasKey = $this->adapter->has($cacheKey);
         } catch (Exception) {
@@ -60,6 +61,7 @@ class Cache
                 return false;
             }
         }
+
         return $value;
     }
 
