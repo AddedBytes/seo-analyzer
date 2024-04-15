@@ -15,8 +15,10 @@ class SitemapMetric extends AbstractMetric
     {
         if (empty($this->value)) {
             $this->impact = 1;
+
             return 'You should consider adding a sitemap.xml file, as this could help with indexing';
         }
+
         return 'yes';
     }
 }
