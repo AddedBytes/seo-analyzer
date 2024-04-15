@@ -2,13 +2,14 @@
 
 namespace SeoAnalyzer\Metric\Page\Content;
 
+use Override;
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class SizeMetric extends AbstractMetric
 {
-    public $description = 'The size of the page';
+    public string $description = 'The size of the page';
 
-    protected $results = [
+    protected array $results = [
         'read_error' => [
             self::IMPACT  => 10,
             self::MESSAGE => 'Can not read your page content',
@@ -27,7 +28,7 @@ class SizeMetric extends AbstractMetric
         ],
     ];
 
-    public function __construct($inputData)
+    public function __construct(mixed $inputData)
     {
         parent::__construct($inputData);
         $conditions = [
@@ -42,6 +43,7 @@ class SizeMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         return $this->checkTheResults('The size of your page is ok');
