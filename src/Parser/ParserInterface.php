@@ -9,7 +9,7 @@ interface ParserInterface
      *
      * @param $html
      */
-    public function setContent($html): void;
+    public function setContent(mixed $html): void;
 
     /**
      * Returns document meta headers content.
