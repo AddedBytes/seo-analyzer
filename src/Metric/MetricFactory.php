@@ -10,11 +10,16 @@ class MetricFactory
      * @return mixed
      * @throws ReflectionException
      */
-    public static function get(string $key, bool|string|null $inputData = null)
+    public static function get(string $key, mixed $inputData = null): mixed
     {
         $class = __NAMESPACE__;
         $path  = explode(".", $key);
         foreach ($path as $level) {
+            if(strtolower($level) === 'ssl') {
+                $class .= '\\' . strtoupper($level);
+
+                continue;
+            }
             $class .= '\\' . ucfirst($level);
         }
         $class .= 'Metric';
