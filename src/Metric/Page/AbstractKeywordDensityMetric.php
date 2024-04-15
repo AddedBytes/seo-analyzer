@@ -13,11 +13,11 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
 
     public function __construct($inputData)
     {
-        if (!$inputData) {
+        if (! $inputData) {
             // Unit tests fail here because sometimes inputDAta is not an array
             // so set some default params for when there's a breaking input
             $inputData = [
-                'locale' => 'en_GB'
+                'locale' => 'en_GB',
             ];
         }
         if (empty($inputData['stop_words'])) {
@@ -26,7 +26,7 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
                 $inputData['stop_words'] = file($stopWordsFilename);
             }
         }
-        if (!empty($inputData['keyword'])) {
+        if (! empty($inputData['keyword'])) {
             $this->keyword = $inputData['keyword'];
         }
         parent::__construct($inputData);
@@ -39,13 +39,14 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
      */
     protected function getWords(string $text, array $stopWords = []): array
     {
-        $text = html_entity_decode($text);
-        $stopWords = array_map(fn($word) => trim((string) $word), $stopWords);
+        $text      = html_entity_decode($text);
+        $stopWords = array_map(fn ($word) => trim((string) $word), $stopWords);
         $stopWords = array_merge($stopWords, ['\'', '"', "-", "_"]);
-        $text = strtolower(preg_replace('/[^a-zA-Z0-9\s]/', '', $text));
-        $words = str_word_count($text, 1);
-        $words = array_diff($words, $stopWords);
-        return array_values(array_filter($words, fn($word) => strlen((string) $word) > 2));
+        $text      = strtolower((string) preg_replace('/[^a-zA-Z0-9\s]/', '', $text));
+        $words     = str_word_count($text, 1);
+        $words     = array_diff($words, $stopWords);
+
+        return array_values(array_filter($words, fn ($word) => strlen((string) $word) > 2));
     }
 
     /**
@@ -57,11 +58,11 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
      */
     protected function analyseKeywords(string $text, array $stopWords, $maxPhraseWords = 4, $minCount = 0): array
     {
-        $words = $this->getWords($text, $stopWords);
-        $keywords = $this->getKeywords($words, $maxPhraseWords);
+        $words               = $this->getWords($text, $stopWords);
+        $keywords            = $this->getKeywords($words, $maxPhraseWords);
         $keywordsPercentages = [];
         for ($phraseWordCount = 1; $phraseWordCount <= $maxPhraseWords; $phraseWordCount++) {
-            if (!empty($keywords[$phraseWordCount])) {
+            if (! empty($keywords[$phraseWordCount])) {
                 $keywordsPercentages[$phraseWordCount] = $this->calculateKeywordsPercentage(
                     $keywords[$phraseWordCount],
                     $minCount,
@@ -69,6 +70,7 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
                 );
             }
         }
+
         return $keywordsPercentages;
     }
 
@@ -81,11 +83,12 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
     {
         $keywords = array_count_values($keywords);
         arsort($keywords);
-        $keywords = array_filter($keywords, fn($count) => $count >= $minCount);
+        $keywords      = array_filter($keywords, fn ($count) => $count >= $minCount);
         $keywordsCount = array_sum($keywords);
         foreach ($keywords as $keyword => $count) {
             $keywords[$keyword] = round($count / $keywordsCount * 100);
         }
+
         return array_slice($keywords, 0, $limit);
     }
 
@@ -96,7 +99,7 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
      */
     protected function getKeywords(array $words, int $maxPhraseWords): array
     {
-        $count = count($words);
+        $count    = count($words);
         $keywords = [];
         for ($i = 0; $i < $count; $i++) {
             for ($x = 1; $x <= $maxPhraseWords; $x++) {
@@ -109,6 +112,7 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
                 }
             }
         }
+
         return $keywords;
     }
 
@@ -121,7 +125,7 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
     {
         $overusedWords = [];
         for ($i = 1; $i <= $maxPhraseWords; $i++) {
-            if (!empty($keywords[$i])) {
+            if (! empty($keywords[$i])) {
                 foreach ($keywords[$i] as $keyword => $percentage) {
                     $actualMaxPercentage = $maxPercentage * $i;
                     if ($actualMaxPercentage > 100) {
@@ -133,6 +137,7 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
                 }
             }
         }
+
         return $overusedWords;
     }
 }
