@@ -4,21 +4,20 @@ namespace SeoAnalyzer\HttpClient;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
+use Override;
 use Psr\Http\Message\ResponseInterface;
 use SeoAnalyzer\HttpClient\Exception\HttpException;
 
 class Client implements ClientInterface
 {
-    protected $options = [
+    protected array $options = [
         'allow_redirects' => ['track_redirects' => true],
         'headers'         => [
             'User-Agent' => 'grgk-seo-analyzer/1.0',
         ],
     ];
 
-    /**
-     * @inheritdoc
-     */
+    #[Override]
     public function get(string $url, array $options = []): ResponseInterface
     {
         if (empty($options)) {
