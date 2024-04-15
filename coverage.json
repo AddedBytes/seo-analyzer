@@ -1,0 +1,238 @@
+{
+  "format": "pest",
+  "coverage-min": 80,
+  "result": [
+    {
+      "file": "src\/Analyzer.php",
+      "uncoveredLines": [
+        "pa164",
+        "pa164"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 95
+    },
+    {
+      "file": "src\/Factor.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Metric\/File\/SitemapMetric.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Metric\/File\/RobotsMetric.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Metric\/MetricFactory.php",
+      "uncoveredLines": [
+        "rt13"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 67
+    },
+    {
+      "file": "src\/Metric\/Page\/LoadTimeMetric.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Metric\/Page\/Url\/LengthMetric.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Metric\/Page\/KeywordMetric.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Metric\/Page\/HeadersMetric.php",
+      "uncoveredLines": [
+        "pa47"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 83
+    },
+    {
+      "file": "src\/Metric\/Page\/RedirectMetric.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Metric\/Page\/Content\/SizeMetric.php",
+      "uncoveredLines": [
+        "pa30"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 67
+    },
+    {
+      "file": "src\/Metric\/Page\/Content\/RatioMetric.php",
+      "uncoveredLines": [
+        "pa11"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 67
+    },
+    {
+      "file": "src\/Metric\/Page\/MetaMetric.php",
+      "uncoveredLines": [
+        "pa34"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 83
+    },
+    {
+      "file": "src\/Metric\/Page\/KeywordDensityMetric.php",
+      "uncoveredLines": [
+        "rt60"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 89
+    },
+    {
+      "file": "src\/Metric\/Page\/AbstractKeywordDensityMetric.php",
+      "uncoveredLines": [
+        "pr12",
+        "pa14",
+        "pa43",
+        "pa49",
+        "pa59",
+        "pa59",
+        "pa86"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 72
+    },
+    {
+      "file": "src\/Metric\/Page\/AltsMetric.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Metric\/Page\/Keyword\/HeadersMetric.php",
+      "uncoveredLines": [
+        "pa23"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 89
+    },
+    {
+      "file": "src\/Metric\/Page\/SSLMetric.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Metric\/Page\/HeadersKeywordDensityMetric.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Metric\/AbstractMetric.php",
+      "uncoveredLines": [
+        "pr18",
+        "pr23",
+        "pr28",
+        "pr33",
+        "pr38",
+        "pa85",
+        "rt85"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 47
+    },
+    {
+      "file": "src\/Metric\/KeywordBasedMetricInterface.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Metric\/MetricInterface.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Parser\/AbstractParser.php",
+      "uncoveredLines": [
+        "pr14",
+        "pa30",
+        "rt40"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 47
+    },
+    {
+      "file": "src\/Parser\/Parser.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Parser\/ExampleCustomParser.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/Parser\/ParserInterface.php",
+      "uncoveredLines": [
+        "pa12"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 67
+    },
+    {
+      "file": "src\/Cache.php",
+      "uncoveredLines": [
+        "pa16",
+        "pa74",
+        "pa74"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 83
+    },
+    {
+      "file": "src\/Page.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/HttpClient\/Exception\/HttpException.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    },
+    {
+      "file": "src\/HttpClient\/Client.php",
+      "uncoveredLines": [
+        "pr12"
+      ],
+      "uncoveredLinesIgnored": [],
+      "percentage": 67
+    },
+    {
+      "file": "src\/HttpClient\/ClientInterface.php",
+      "uncoveredLines": [],
+      "uncoveredLinesIgnored": [],
+      "percentage": 100
+    }
+  ],
+  "total": 87.84
+}
