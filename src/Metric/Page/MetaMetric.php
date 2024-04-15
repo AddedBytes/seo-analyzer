@@ -2,14 +2,15 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
+use Override;
 use SeoAnalyzer\Factor;
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class MetaMetric extends AbstractMetric
 {
-    public $description = 'Html meta tags information';
+    public string $description = 'Html meta tags information';
 
-    protected $results = [
+    protected array $results = [
         'no_tags' => [
             self::IMPACT  => 8,
             self::MESSAGE => 'Missing page title and description meta tags. You should add the title meta tag at least',
@@ -31,7 +32,7 @@ class MetaMetric extends AbstractMetric
         ],
     ];
 
-    public function __construct($inputData)
+    public function __construct(mixed $inputData)
     {
         parent::__construct($inputData);
         $this->setUpResultsConditions();
@@ -40,6 +41,7 @@ class MetaMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         return $this->checkTheResults('The site meta tags look good');
@@ -48,6 +50,7 @@ class MetaMetric extends AbstractMetric
     /**
      * @inheritDoc
      */
+    #[Override]
     protected function setUpResultsConditions(array $conditions = []): bool
     {
         $conditions = ['no_tags' => empty($this->value)];
