@@ -13,6 +13,7 @@ class Parser extends AbstractParser
         foreach ($this->getDomElements('meta') as $item) {
             $meta[$item->getAttribute('name')] = trim($item->getAttribute('content'));
         }
+
         return $meta;
     }
 
@@ -22,11 +23,12 @@ class Parser extends AbstractParser
     public function getHeaders(): array
     {
         $headers = [];
-        for ($x=1; $x<=5; $x++) {
+        for ($x = 1; $x <= 5; $x++) {
             foreach ($this->getDomElements('h' . $x) as $item) {
-                $headers['h' . $x][] = trim($item->nodeValue);
+                $headers['h' . $x][] = trim((string) $item->nodeValue);
             }
         }
+
         return $headers;
     }
 
@@ -36,8 +38,9 @@ class Parser extends AbstractParser
     public function getTitle(): string
     {
         if ($this->getDomElements('title')->length > 0) {
-            return trim($this->getDomElements('title')->item(0)->nodeValue);
+            return trim((string) $this->getDomElements('title')->item(0)->nodeValue);
         }
+
         return '';
     }
 
@@ -52,6 +55,7 @@ class Parser extends AbstractParser
                 $alts[] = trim($img->getAttribute('alt'));
             }
         }
+
         return $alts;
     }
 
@@ -63,6 +67,7 @@ class Parser extends AbstractParser
         $this->removeTags('script');
         $this->removeTags('style');
         $text = strip_tags($this->dom->saveHTML());
+
         return preg_replace('!\s+!', ' ', strip_tags($text));
     }
 }
