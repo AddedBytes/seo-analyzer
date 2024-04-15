@@ -8,8 +8,6 @@ use SeoAnalyzer\HttpClient\Exception\HttpException;
 interface ClientInterface
 {
     /**
-     * @param string $url
-     * @param array $options
      * @return ResponseInterface
      * @throws HttpException
      */
