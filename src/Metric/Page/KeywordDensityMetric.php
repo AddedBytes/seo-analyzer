@@ -2,16 +2,18 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
+use Override;
 use SeoAnalyzer\Factor;
 use SeoAnalyzer\Metric\KeywordBasedMetricInterface;
 
 class KeywordDensityMetric extends AbstractKeywordDensityMetric implements KeywordBasedMetricInterface
 {
-    public $description = 'Keyword density in page content';
+    public string $description = 'Keyword density in page content';
 
     /**
      * @inheritdoc
      */
+    #[Override]
     public function analyze(): string
     {
         $keywords = $this->analyseKeywords($this->value['text'], $this->value['stop_words']);
@@ -57,7 +59,7 @@ class KeywordDensityMetric extends AbstractKeywordDensityMetric implements Keywo
         return 'Good! The key phrase is present in most popular keywords on the site';
     }
 
-    private function getPhrases()
+    private function getPhrases(): array
     {
         return array_keys(array_merge(...$this->value[Factor::KEYWORDS]));
     }
