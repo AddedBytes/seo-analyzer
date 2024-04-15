@@ -13,10 +13,12 @@ class RedirectMetric extends AbstractMetric
      */
     public function analyze(): string
     {
-        if (!empty($this->value)) {
+        if (! empty($this->value)) {
             $this->impact = 2;
+
             return 'You should avoid redirects, as this could have impact on SEO';
         }
+
         return 'no';
     }
 }
