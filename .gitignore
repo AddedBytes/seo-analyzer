@@ -13,3 +13,4 @@
 ray.php
 /build/
 /phpstan-baseline.neon
+/.phpunit.cache/
