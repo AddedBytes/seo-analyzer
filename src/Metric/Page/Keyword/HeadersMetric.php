@@ -11,13 +11,13 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
 
     protected $results = [
         'no_keyword_h1' => [
-            self::IMPACT => 7,
-            self::MESSAGE => 'The main H1 header does not contain the keyword phrase. Adding it could strongly improve SEO'
+            self::IMPACT  => 7,
+            self::MESSAGE => 'The main H1 header does not contain the keyword phrase. Adding it could strongly improve SEO',
         ],
         'no_keyword_h2' => [
-            self::IMPACT => 3,
-            self::MESSAGE => 'The site H2 headers does not contain the keyword phrase. Adding it could strongly improve SEO'
-        ]
+            self::IMPACT  => 3,
+            self::MESSAGE => 'The site H2 headers does not contain the keyword phrase. Adding it could strongly improve SEO',
+        ],
     ];
 
     public function __construct($inputData)
@@ -41,8 +41,9 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
     {
         $conditions = [
             'no_keyword_h1' => $this->isKeywordMissingInHeaders(),
-            'no_keyword_h2' => $this->isKeywordMissingInHeaders('h2')
+            'no_keyword_h2' => $this->isKeywordMissingInHeaders('h2'),
         ];
+
         return parent::setUpResultsConditions($conditions);
     }
 
@@ -60,6 +61,7 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
                 $keywordNotFound = false;
             }
         }
+
         return $keywordNotFound;
     }
 }
