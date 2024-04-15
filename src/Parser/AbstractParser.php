@@ -5,18 +5,13 @@ namespace SeoAnalyzer\Parser;
 use DOMDocument;
 use DOMElement;
 use DOMNodeList;
+use Override;
 
 abstract class AbstractParser implements ParserInterface
 {
-    /**
-     * @var DOMDocument Dom representation of HTML document
-     */
-    protected $dom;
+    protected DOMDocument $dom;
 
-    /**
-     * @param string $html Html document to parse.
-     */
-    public function __construct(string $html = null)
+    public function __construct(string|null $html = null)
     {
         $this->dom = new DOMDocument();
         if (! empty($html)) {
@@ -24,20 +19,15 @@ abstract class AbstractParser implements ParserInterface
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setContent($html): void
+    #[Override]
+    public function setContent(mixed $html): void
     {
         $internalErrors = libxml_use_internal_errors(true);
         $this->dom->loadHTML($html, LIBXML_NOWARNING);
         libxml_use_internal_errors($internalErrors);
     }
 
-    /**
-     * Removes specified tags with it's content from DOM.
-     */
-    protected function removeTags(string $tag)
+    protected function removeTags(string $tag): void
     {
         $tagsToRemove = [];
         foreach ($this->getDomElements($tag) as $tag) {
@@ -48,12 +38,7 @@ abstract class AbstractParser implements ParserInterface
         }
     }
 
-    /**
-     * Returns DOM elements by tag name.
-     *
-     * @return DOMNodeList|DOMElement[]
-     */
-    protected function getDomElements(string $name): DOMNodeList
+    protected function getDomElements(string $name): DOMNodeList|DOMElement
     {
         return $this->dom->getElementsByTagName($name);
     }
