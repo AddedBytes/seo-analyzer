@@ -1,54 +1,34 @@
 <?php
 
-namespace Tests\TestCase\Metric;
-
-use ReflectionException;
 use SeoAnalyzer\Analyzer;
 use SeoAnalyzer\Metric\MetricFactory;
 use Symfony\Component\Translation\Translator;
-use Tests\TestCase;
 
-class MetricsTest extends TestCase
-{
-    /**
-     * @var Translator
-     */
-    protected $translator;
+beforeEach(function () {
+    $analyzer = new Analyzer();
+    $analyzer->setUpTranslator('pl_PL');
+    $this->translator = $analyzer->translator;
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $analyzer = new Analyzer();
-        $analyzer->setUpTranslator('pl_PL');
-        $this->translator = $analyzer->translator;
+test('analyze pass', function (string $metricKey, mixed $input, array $expected) {
+    $metric = MetricFactory::get($metricKey, $input);
+    expect($metric)->toBeInstanceOf($expected['class']);
+    $analysis = $metric->analyze();
+    if (isset($expected['value'])) {
+        expect($metric->value)->toBe($expected['value']);
     }
+    expect($metric->impact)->toEqual($expected['impact']);
+    $this->assertStringContainsString($expected['analysis'], $analysis);
+    $this->assertNotEquals($metric->description, $this->translator->trans($metric->description));
+    $this->assertNotEquals($analysis, $this->translator->trans($analysis));
+})->with('metricsDataProvider');
 
-    /**
-     * @dataProvider metricsDataProvider
-     * @throws ReflectionException
-     */
-    public function testAnalyzePass(string $metricKey, mixed $input, array $expected)
-    {
-        $metric = MetricFactory::get($metricKey, $input);
-        $this->assertInstanceOf($expected['class'], $metric);
-        $analysis = $metric->analyze();
-        if (isset($expected['value'])) {
-            $this->assertSame($expected['value'], $metric->value);
-        }
-        $this->assertEquals($expected['impact'], $metric->impact);
-        $this->assertStringContainsString($expected['analysis'], $analysis);
-        $this->assertNotEquals($metric->description, $this->translator->trans($metric->description));
-        $this->assertNotEquals($analysis, $this->translator->trans($analysis));
-    }
-
-    public function metricsDataProvider()
-    {
-        return array_merge(
-            require_once 'metricsTestData/file.php',
-            require_once 'metricsTestData/keywords.php',
-            require_once 'metricsTestData/page.php',
-            require_once 'metricsTestData/pageHeaders.php',
-            require_once 'metricsTestData/pageMeta.php'
-        );
-    }
-}
+dataset('metricsDataProvider', function () {
+    return array_merge(
+        require_once 'metricsTestData/file.php',
+        require_once 'metricsTestData/keywords.php',
+        require_once 'metricsTestData/page.php',
+        require_once 'metricsTestData/pageHeaders.php',
+        require_once 'metricsTestData/pageMeta.php'
+    );
+});

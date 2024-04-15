@@ -1,28 +1,16 @@
 <?php
 
-namespace Tests\TestCase\Metric\Page\Keyword;
-
-use ReflectionException;
 use SeoAnalyzer\Metric\Page\Keyword\HeadersMetric;
-use Tests\TestCase;
 
-class HeadersMetricTest extends TestCase
-{
-    /**
-     * @dataProvider metricsDataProvider
-     * @throws ReflectionException
-     */
-    public function testAnalyzePass($value, array $expected)
-    {
-        $metric = new HeadersMetric($value);
-        $message = $metric->analyze();
-        $this->assertStringContainsString($expected['message'], $message);
-        $this->assertEquals($metric->impact, $expected['impact']);
-    }
+test('analyze pass', function ($value, array $expected) {
+    $metric = new HeadersMetric($value);
+    $message = $metric->analyze();
+    $this->assertStringContainsString($expected['message'], $message);
+    expect($expected['impact'])->toEqual($metric->impact);
+})->with('metricsDataProvider');
 
-    public function metricsDataProvider()
-    {
-        return [
+dataset('metricsDataProvider', function () {
+    return [
 //            [[], ['message' => 'The main H1 header does not contain the keyword phrase.', 'impact' => 7]],
 //            [
 //                ['h1' => ['Lorem simsup dolor sit'], 'keyword' => 'ipsum'],
@@ -42,16 +30,15 @@ class HeadersMetricTest extends TestCase
 //                ],
 //                ['message' => 'The site H2 headers does not contain the keyword phrase. Adding it', 'impact' => 3]
 //            ],
+        [
             [
-                [
-                    'headers' => [
-                        'h1' => ['Lorem ipsum dolor sit'],
-                        'h2' => ['First header', 'Some other lorem ipsum dolor sit']
-                    ],
-                    'keyword' => 'ipsum'
+                'headers' => [
+                    'h1' => ['Lorem ipsum dolor sit'],
+                    'h2' => ['First header', 'Some other lorem ipsum dolor sit']
                 ],
-                ['message' => 'Good! The site headers contain the keyword phrase', 'impact' => 0]
+                'keyword' => 'ipsum'
             ],
-        ];
-    }
-}
+            ['message' => 'Good! The site headers contain the keyword phrase', 'impact' => 0]
+        ],
+    ];
+});

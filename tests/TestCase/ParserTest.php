@@ -1,75 +1,56 @@
 <?php
 
-namespace Tests\TestCase;
-
 use SeoAnalyzer\Parser\ExampleCustomParser;
 use SeoAnalyzer\Parser\Parser;
-use Tests\TestCase;
 
-class ParserTest extends TestCase
-{
-    private Parser $parser;
+beforeEach(function () {
+    $this->parser = new Parser(file_get_contents(dirname(__DIR__) . '/data/test.html'));
+});
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->parser = new Parser(file_get_contents(dirname(__DIR__) . '/data/test.html'));
-    }
+test('get meta pass', function () {
+    $this->assertStringContainsString(
+        '{"":"","description":"Some good, valid and proper testing description for our test site","viewport":"',
+        json_encode($this->parser->getMeta(), JSON_THROW_ON_ERROR)
+    );
+});
 
-    public function testGetMetaPass()
-    {
-        $this->assertStringContainsString(
-            '{"":"","description":"Some good, valid and proper testing description for our test site","viewport":"',
-            json_encode($this->parser->getMeta(), JSON_THROW_ON_ERROR)
-        );
-    }
+test('get headers pass', function () {
+    $this->assertStringContainsString(
+        '{"h1":["Header tells about testing"],"h2":["We like testing","Search engine optimization"],"h3":["',
+        json_encode($this->parser->getHeaders(), JSON_THROW_ON_ERROR)
+    );
+});
 
-    public function testGetHeadersPass()
-    {
-        $this->assertStringContainsString(
-            '{"h1":["Header tells about testing"],"h2":["We like testing","Search engine optimization"],"h3":["',
-            json_encode($this->parser->getHeaders(), JSON_THROW_ON_ERROR)
-        );
-    }
+test('get title pass', function () {
+    expect($this->parser->getTitle())->toEqual('Testing title');
+});
 
-    public function testGetTitlePass()
-    {
-        $this->assertEquals(
-            'Testing title',
-            $this->parser->getTitle()
-        );
-    }
+test('get alts pass', function () {
+    $this->assertStringContainsString(
+        '["see me testing","check it out","description of image"]',
+        json_encode($this->parser->getAlts(), JSON_THROW_ON_ERROR)
+    );
+});
 
-    public function testGetAltsPass()
-    {
-        $this->assertStringContainsString(
-            '["see me testing","check it out","description of image"]',
-            json_encode($this->parser->getAlts(), JSON_THROW_ON_ERROR)
-        );
-    }
+test('get text pass', function () {
+    $text = $this->parser->getText();
+    expect(strlen((string) $text))->toEqual(3857);
+    $this->assertStringContainsString('Testing title Header tells about testing We like testing Search engine', $text);
+    $this->assertStringContainsString('SEO may target different kinds of search, including image search, video search', $text);
+    $this->assertStringContainsString('increase its relevance to specific keywords and to remove barriers', $text);
+    $this->assertStringContainsString('increase its relevance to specific keywords and to remove barriers', $text);
+    $this->assertStringNotContainsString('alert', $text);
+    $this->assertStringNotContainsString('testAlert', $text);
+    $this->assertStringNotContainsString('<html>', $text);
+    $this->assertStringNotContainsString('<style>', $text);
+    $this->assertStringNotContainsString('<script>', $text);
+    $this->assertStringNotContainsString('<h2>', $text);
+});
 
-    public function testGetTextPass()
-    {
-        $text = $this->parser->getText();
-        $this->assertEquals(3857, strlen((string) $text));
-        $this->assertStringContainsString('Testing title Header tells about testing We like testing Search engine', $text);
-        $this->assertStringContainsString('SEO may target different kinds of search, including image search, video search', $text);
-        $this->assertStringContainsString('increase its relevance to specific keywords and to remove barriers', $text);
-        $this->assertStringContainsString('increase its relevance to specific keywords and to remove barriers', $text);
-        $this->assertStringNotContainsString('alert', $text);
-        $this->assertStringNotContainsString('testAlert', $text);
-        $this->assertStringNotContainsString('<html>', $text);
-        $this->assertStringNotContainsString('<style>', $text);
-        $this->assertStringNotContainsString('<script>', $text);
-        $this->assertStringNotContainsString('<h2>', $text);
-    }
-
-    public function testExampleCustomParserGetAltsPass()
-    {
-        $parser = new ExampleCustomParser(file_get_contents(dirname(__DIR__) . '/data/test.html'));
-        $this->assertStringContainsString(
-            '[{"alt":"see me testing","src":"image.jpg"},{"alt":"check it out","src":"image.jpg"},{"alt":"description',
-            json_encode($parser->getAlts(), JSON_THROW_ON_ERROR)
-        );
-    }
-}
+test('example custom parser get alts pass', function () {
+    $parser = new ExampleCustomParser(file_get_contents(dirname(__DIR__) . '/data/test.html'));
+    $this->assertStringContainsString(
+        '[{"alt":"see me testing","src":"image.jpg"},{"alt":"check it out","src":"image.jpg"},{"alt":"description',
+        json_encode($parser->getAlts(), JSON_THROW_ON_ERROR)
+    );
+});

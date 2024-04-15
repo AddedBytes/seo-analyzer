@@ -1,29 +1,16 @@
 <?php
-namespace Tests\TestCase\Metric;
 
-use ReflectionException;
-use Tests\TestCase;
 use Tests\TestCase\Metric\Mock\ConditionsCallableTestMetric;
 
-class ConditionsCallableMetricTest extends TestCase
-{
-    /**
-     * @throws ReflectionException
-     */
-    public function testAnalyzePassWithMetricsCallableConditions()
-    {
-        $metric = new ConditionsCallableTestMetric('not empty value');
-        $this->assertEquals('Success test metric output message', $metric->analyze());
-        $this->assertEquals($metric->impact, 0);
-    }
 
-    /**
-     * @throws ReflectionException
-     */
-    public function testAnalyzeFailWithMetricsCallableConditions()
-    {
-        $metric = new ConditionsCallableTestMetric(null);
-        $this->assertEquals('Fail test metric output message', $metric->analyze());
-        $this->assertEquals($metric->impact, 4);
-    }
-}
+test('analyze pass with metrics callable conditions', function () {
+    $metric = new ConditionsCallableTestMetric('not empty value');
+    expect($metric->analyze())->toEqual('Success test metric output message');
+    expect(0)->toEqual($metric->impact);
+});
+
+test('analyze fail with metrics callable conditions', function () {
+    $metric = new ConditionsCallableTestMetric(null);
+    expect($metric->analyze())->toEqual('Fail test metric output message');
+    expect(4)->toEqual($metric->impact);
+});

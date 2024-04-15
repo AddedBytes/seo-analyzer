@@ -1,34 +1,22 @@
 <?php
 
-namespace Tests\TestCase;
-
-use ReflectionException;
 use SeoAnalyzer\Page;
-use Tests\TestCase;
 
-class PageTest extends TestCase
-{
-    public function testConstructor()
-    {
-        $url = 'https://www.example.org';
-        $html = '<html lang="en"><body><p>testing</p></body></html>';
-        $clientMock = $this->getClientMock($html);
-        $page = new Page($url, 'en_GB', $clientMock);
-        $this->assertInstanceOf(Page::class, $page);
-        $this->assertEquals($html, $page->content);
-        $this->assertEquals($url, $page->url);
-    }
+test('constructor', function () {
+    $url = 'https://www.example.org';
+    $html = '<html lang="en"><body><p>testing</p></body></html>';
+    $clientMock = $this->getClientMock($html);
+    $page = new Page($url, 'en_GB', $clientMock);
+    expect($page)->toBeInstanceOf(Page::class);
+    expect($page->content)->toEqual($html);
+    expect($page->url)->toEqual($url);
+});
 
-    /**
-     * @throws ReflectionException
-     */
-    public function testGetMetricsPassWithUrl()
-    {
-        $html = '<html lang="en"><body><p>testing</p></body></html>';
-        $clientMock = $this->getClientMock($html);
-        $page = new Page(null, null, $clientMock);
-        $page->url = 'http://www.example.org';
-        $metrics = $page->getMetrics();
-        $this->assertIsArray($metrics);
-    }
-}
+test('get metrics pass with url', function () {
+    $html = '<html lang="en"><body><p>testing</p></body></html>';
+    $clientMock = $this->getClientMock($html);
+    $page = new Page(null, null, $clientMock);
+    $page->url = 'http://www.example.org';
+    $metrics = $page->getMetrics();
+    expect($metrics)->toBeArray();
+});

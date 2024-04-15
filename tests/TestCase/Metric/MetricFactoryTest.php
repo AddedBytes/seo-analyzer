@@ -1,33 +1,19 @@
 <?php
 
-namespace Tests\TestCase\Metric;
-
-use ReflectionException;
 use SeoAnalyzer\Metric\MetricFactory;
 use SeoAnalyzer\Metric\Page\Content\SizeMetric;
-use Tests\TestCase;
 use Tests\TestCase\Metric\Mock\MissingNameTestMetric;
 
-class MetricFactoryTest extends TestCase
-{
-    /**
-     * @throws ReflectionException
-     */
-    public function testGetPass()
-    {
-        $metric = MetricFactory::get('page.content.size', 4076);
-        $this->assertInstanceOf(SizeMetric::class, $metric);
-        $this->assertEquals('The size of the page', $metric->description);
-        $this->assertEquals(4076, $metric->value);
-    }
 
-    /**
-     * @expectedException ReflectionException
-     */
-    public function testGetFailOnNotExistingClass()
-    {
-        $this->expectException(ReflectionException::class);
+test('get pass', function () {
+    $metric = MetricFactory::get('page.content.size', 4076);
+    expect($metric)->toBeInstanceOf(SizeMetric::class);
+    expect($metric->description)->toEqual('The size of the page');
+    expect($metric->value)->toEqual(4076);
+});
 
-        MetricFactory::get('page.not_existing', 4076);
-    }
-}
+test('get fail on not existing class', function () {
+    $this->expectException(ReflectionException::class);
+
+    MetricFactory::get('page.not_existing', 4076);
+});

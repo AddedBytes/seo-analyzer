@@ -1,224 +1,156 @@
 <?php
 
-namespace Tests\TestCase;
-
-use InvalidArgumentException;
 use SeoAnalyzer\Analyzer;
 use SeoAnalyzer\HttpClient\Exception\HttpException;
-use ReflectionException;
 use SeoAnalyzer\Metric\AbstractMetric;
 use SeoAnalyzer\Page;
-use Tests\TestCase;
 
-class AnalyzerTest extends TestCase
-{
-    /**
-     * @throws HttpException
-     * @throws ReflectionException
-     */
-    public function testAnalyzeUrlPass()
-    {
-        $clientMock = $this->getClientMock();
-        $analyzer = new Analyzer(null, $clientMock);
-        $results = $analyzer->analyzeUrl('http://www.example.org');
-        $this->assertTrue(is_array($results));
-        $this->assertSameSize($analyzer->getMetrics(), $results);
-        $this->assertStringContainsString('You should avoid redirects', $results['PageRedirect']['analysis']);
-        $this->assertArrayHasKey('analysis', current($results));
-        $this->assertArrayHasKey('name', current($results));
-        $this->assertArrayHasKey('description', current($results));
-        $this->assertArrayHasKey('value', current($results));
-        $this->assertArrayHasKey('negative_impact', current($results));
+test('analyze url pass', function () {
+    $clientMock = $this->getClientMock();
+    $analyzer = new Analyzer(null, $clientMock);
+    $results = $analyzer->analyzeUrl('http://www.example.org');
+    expect(is_array($results))->toBeTrue();
+    $this->assertSameSize($analyzer->getMetrics(), $results);
+    $this->assertStringContainsString('You should avoid redirects', $results['PageRedirect']['analysis']);
+    expect(current($results))->toHaveKey('analysis');
+    expect(current($results))->toHaveKey('name');
+    expect(current($results))->toHaveKey('description');
+    expect(current($results))->toHaveKey('value');
+    expect(current($results))->toHaveKey('negative_impact');
+});
+
+test('analyze url pass with keyword translated', function () {
+    $clientMock = $this->getClientMock();
+    $analyzer = new Analyzer(null, $clientMock);
+    $results = $analyzer->analyzeUrl('http://www.example.org', 'keyword', 'pl_PL');
+    expect(is_array($results))->toBeTrue();
+    expect(count($results))->toEqual(count($analyzer->getMetrics()));
+    $this->assertStringContainsString('Powinienieś unikać przekierowań', $results['PageRedirect']['analysis']);
+});
+
+test('analyze url with keyword pass', function () {
+    $clientMock = $this->getClientMock();
+    $analyzer = new Analyzer(null, $clientMock);
+    $results = $analyzer->analyzeUrl('http://www.example.org', 'keyword');
+    expect(is_array($results))->toBeTrue();
+    $this->assertSameSize($analyzer->getMetrics(), $results);
+    expect(current($results))->toHaveKey('analysis');
+    expect(current($results))->toHaveKey('name');
+    expect(current($results))->toHaveKey('description');
+    expect(current($results))->toHaveKey('value');
+    expect(current($results))->toHaveKey('negative_impact');
+});
+
+test('analyze url fail on invalid url', function () {
+    $this->expectException(HttpException::class);
+    $this->expectException(HttpException::class);
+
+    (new Analyzer())->analyzeUrl('invalid-url');
+});
+
+test('analyze file pass', function () {
+    $clientMock = $this->getClientMock();
+    $analyzer = new Analyzer(null, $clientMock);
+    $results = $analyzer->analyzeFile(dirname(__DIR__) . '/data/test.html');
+    expect(is_array($results))->toBeTrue();
+    $this->assertSameSize($analyzer->getMetrics(), $results);
+    expect(current($results))->toHaveKey('analysis');
+    expect(current($results))->toHaveKey('name');
+    expect(current($results))->toHaveKey('description');
+    expect(current($results))->toHaveKey('value');
+    expect(current($results))->toHaveKey('negative_impact');
+});
+
+test('analyze html pass', function () {
+    $clientMock = $this->getClientMock();
+    $analyzer = new Analyzer(null, $clientMock);
+    $htmlString =  file_get_contents(dirname(__DIR__) . '/data/test.html');
+    $results = $analyzer->analyzeHtml($htmlString);
+    expect(is_array($results))->toBeTrue();
+    $this->assertSameSize($analyzer->getMetrics(), $results);
+    expect(current($results))->toHaveKey('analysis');
+    expect(current($results))->toHaveKey('name');
+    expect(current($results))->toHaveKey('description');
+    expect(current($results))->toHaveKey('value');
+    expect(current($results))->toHaveKey('negative_impact');
+});
+
+test('analyze pass', function () {
+    $page = new Page();
+    $page->content = file_get_contents(dirname(__DIR__) . '/data/test.html');
+    $analyzer = new Analyzer($page);
+    $results = $analyzer->analyze();
+    expect(is_array($results))->toBeTrue();
+    $this->assertSameSize($analyzer->getMetrics(), $results);
+    expect(current($results))->toHaveKey('analysis');
+    expect(current($results))->toHaveKey('name');
+    expect(current($results))->toHaveKey('description');
+    expect(current($results))->toHaveKey('value');
+    expect(current($results))->toHaveKey('negative_impact');
+});
+
+test('analyze fail on no page', function () {
+    $this->expectException(InvalidArgumentException::class);
+    // No
+    $this->expectException(InvalidArgumentException::class);
+
+    $analyzer = new Analyzer();
+    $analyzer->analyze();
+});
+
+test('analyze pass in english as default', function () {
+    $page = new Page();
+    $page->content = '<html lang="en"></html>';
+    $analyzer = new Analyzer($page);
+    $results = $analyzer->analyze();
+    expect($results['PageContentSize']['analysis'])->toEqual('The size of your page is ok');
+});
+
+test('analyze pass in polish', function () {
+    $page = new Page();
+    $page->content = '<html lang="en"></html>';
+    $analyzer = new Analyzer($page);
+    $analyzer->locale = 'pl_PL';
+    $results = $analyzer->analyze();
+    expect($results['PageContentSize']['analysis'])->toEqual('Rozmiar strony jest w porządku');
+});
+
+test('analyze pass on empty page content', function () {
+    $page = new Page();
+    $page->content = '<html lang="en"></html>';
+    $analyzer = new Analyzer($page);
+    $results = $analyzer->analyze();
+    expect(is_array($results))->toBeTrue();
+    $this->assertSameSize($analyzer->getMetrics(), $results);
+    expect(current($results))->toHaveKey('analysis');
+    expect(current($results))->toHaveKey('name');
+    expect(current($results))->toHaveKey('description');
+    expect(current($results))->toHaveKey('value');
+    expect(current($results))->toHaveKey('negative_impact');
+});
+
+test('analyze pass on invalid html', function () {
+    $page = new Page();
+    $page->content = "<html lang='en'><body><dif>hrad>><r\"o<!dif? \'dfgdf'''';< html>";
+    $analyzer = new Analyzer($page);
+    $results = $analyzer->analyze();
+    expect(is_array($results))->toBeTrue();
+    $this->assertSameSize($analyzer->getMetrics(), $results);
+    expect(current($results))->toHaveKey('analysis');
+    expect(current($results))->toHaveKey('name');
+    expect(current($results))->toHaveKey('description');
+    expect(current($results))->toHaveKey('value');
+    expect(current($results))->toHaveKey('negative_impact');
+});
+
+test('get metrics pass', function () {
+    $clientMock = $this->getClientMock();
+    $page = new Page();
+    $page->content = '<html lang="en"></html>';
+    $analyzer = new Analyzer($page, $clientMock);
+    $metrics = $analyzer->getMetrics();
+    expect(is_array($metrics))->toBeTrue();
+    foreach ($metrics as $metric) {
+        expect($metric)->toBeInstanceOf(AbstractMetric::class);
     }
-
-    /**
-     * @throws HttpException
-     * @throws ReflectionException
-     */
-    public function testAnalyzeUrlPassWithKeywordTranslated()
-    {
-        $clientMock = $this->getClientMock();
-        $analyzer = new Analyzer(null, $clientMock);
-        $results = $analyzer->analyzeUrl('http://www.example.org', 'keyword', 'pl_PL');
-        $this->assertTrue(is_array($results));
-        $this->assertEquals(count($analyzer->getMetrics()), count($results));
-        $this->assertStringContainsString('Powinienieś unikać przekierowań', $results['PageRedirect']['analysis']);
-    }
-
-    /**
-     * @throws HttpException
-     * @throws ReflectionException
-     */
-    public function testAnalyzeUrlWithKeywordPass()
-    {
-        $clientMock = $this->getClientMock();
-        $analyzer = new Analyzer(null, $clientMock);
-        $results = $analyzer->analyzeUrl('http://www.example.org', 'keyword');
-        $this->assertTrue(is_array($results));
-        $this->assertSameSize($analyzer->getMetrics(), $results);
-        $this->assertArrayHasKey('analysis', current($results));
-        $this->assertArrayHasKey('name', current($results));
-        $this->assertArrayHasKey('description', current($results));
-        $this->assertArrayHasKey('value', current($results));
-        $this->assertArrayHasKey('negative_impact', current($results));
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    public function testAnalyzeUrlFailOnInvalidUrl()
-    {$this->expectException(HttpException::class);
-        $this->expectException(HttpException::class);
-
-        (new Analyzer())->analyzeUrl('invalid-url');
-    }
-
-    /**
-     * @throws HttpException
-     * @throws ReflectionException
-     */
-    public function testAnalyzeFilePass()
-    {
-        $clientMock = $this->getClientMock();
-        $analyzer = new Analyzer(null, $clientMock);
-        $results = $analyzer->analyzeFile(dirname(__DIR__) . '/data/test.html');
-        $this->assertTrue(is_array($results));
-        $this->assertSameSize($analyzer->getMetrics(), $results);
-        $this->assertArrayHasKey('analysis', current($results));
-        $this->assertArrayHasKey('name', current($results));
-        $this->assertArrayHasKey('description', current($results));
-        $this->assertArrayHasKey('value', current($results));
-        $this->assertArrayHasKey('negative_impact', current($results));
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    public function testAnalyzeHtmlPass()
-    {
-        $clientMock = $this->getClientMock();
-        $analyzer = new Analyzer(null, $clientMock);
-        $htmlString =  file_get_contents(dirname(__DIR__) . '/data/test.html');
-        $results = $analyzer->analyzeHtml($htmlString);
-        $this->assertTrue(is_array($results));
-        $this->assertSameSize($analyzer->getMetrics(), $results);
-        $this->assertArrayHasKey('analysis', current($results));
-        $this->assertArrayHasKey('name', current($results));
-        $this->assertArrayHasKey('description', current($results));
-        $this->assertArrayHasKey('value', current($results));
-        $this->assertArrayHasKey('negative_impact', current($results));
-    }
-
-    /**
-     * @throws HttpException
-     * @throws ReflectionException
-     */
-    public function testAnalyzePass()
-    {
-        $page = new Page();
-        $page->content = file_get_contents(dirname(__DIR__) . '/data/test.html');
-        $analyzer = new Analyzer($page);
-        $results = $analyzer->analyze();
-        $this->assertTrue(is_array($results));
-        $this->assertSameSize($analyzer->getMetrics(), $results);
-        $this->assertArrayHasKey('analysis', current($results));
-        $this->assertArrayHasKey('name', current($results));
-        $this->assertArrayHasKey('description', current($results));
-        $this->assertArrayHasKey('value', current($results));
-        $this->assertArrayHasKey('negative_impact', current($results));
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    public function testAnalyzeFailOnNoPage()
-    {
-        $this->expectException(InvalidArgumentException::class);// No
-        $this->expectException(InvalidArgumentException::class);
-
-        $analyzer = new Analyzer();
-        $analyzer->analyze();
-    }
-
-    /**
-     * @throws HttpException
-     * @throws ReflectionException
-     */
-    public function testAnalyzePassInEnglishAsDefault()
-    {
-        $page = new Page();
-        $page->content = '<html lang="en"></html>';
-        $analyzer = new Analyzer($page);
-        $results = $analyzer->analyze();
-        $this->assertEquals('The size of your page is ok', $results['PageContentSize']['analysis']);
-    }
-
-    /**
-     * @throws HttpException
-     * @throws ReflectionException
-     */
-    public function testAnalyzePassInPolish()
-    {
-        $page = new Page();
-        $page->content = '<html lang="en"></html>';
-        $analyzer = new Analyzer($page);
-        $analyzer->locale = 'pl_PL';
-        $results = $analyzer->analyze();
-        $this->assertEquals('Rozmiar strony jest w porządku', $results['PageContentSize']['analysis']);
-    }
-
-    /**
-     * @throws HttpException
-     * @throws ReflectionException
-     */
-    public function testAnalyzePassOnEmptyPageContent()
-    {
-        $page = new Page();
-        $page->content = '<html lang="en"></html>';
-        $analyzer = new Analyzer($page);
-        $results = $analyzer->analyze();
-        $this->assertTrue(is_array($results));
-        $this->assertSameSize($analyzer->getMetrics(), $results);
-        $this->assertArrayHasKey('analysis', current($results));
-        $this->assertArrayHasKey('name', current($results));
-        $this->assertArrayHasKey('description', current($results));
-        $this->assertArrayHasKey('value', current($results));
-        $this->assertArrayHasKey('negative_impact', current($results));
-    }
-
-    /**
-     * @throws HttpException
-     * @throws ReflectionException
-     */
-    public function testAnalyzePassOnInvalidHtml()
-    {
-        $page = new Page();
-        $page->content = "<html lang='en'><body><dif>hrad>><r\"o<!dif? \'dfgdf'''';< html>";
-        $analyzer = new Analyzer($page);
-        $results = $analyzer->analyze();
-        $this->assertTrue(is_array($results));
-        $this->assertSameSize($analyzer->getMetrics(), $results);
-        $this->assertArrayHasKey('analysis', current($results));
-        $this->assertArrayHasKey('name', current($results));
-        $this->assertArrayHasKey('description', current($results));
-        $this->assertArrayHasKey('value', current($results));
-        $this->assertArrayHasKey('negative_impact', current($results));
-    }
-
-    /**
-     * @throws HttpException
-     * @throws ReflectionException
-     */
-    public function testGetMetricsPass()
-    {
-        $clientMock = $this->getClientMock();
-        $page = new Page();
-        $page->content = '<html lang="en"></html>';
-        $analyzer = new Analyzer($page, $clientMock);
-        $metrics = $analyzer->getMetrics();
-        $this->assertTrue(is_array($metrics));
-        foreach ($metrics as $metric) {
-            $this->assertInstanceOf(AbstractMetric::class, $metric);
-        }
-    }
-}
+});
