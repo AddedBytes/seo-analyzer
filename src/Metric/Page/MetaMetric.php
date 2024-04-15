@@ -11,24 +11,24 @@ class MetaMetric extends AbstractMetric
 
     protected $results = [
         'no_tags' => [
-            self::IMPACT => 8,
-            self::MESSAGE => 'Missing page title and description meta tags. You should add the title meta tag at least'
+            self::IMPACT  => 8,
+            self::MESSAGE => 'Missing page title and description meta tags. You should add the title meta tag at least',
         ],
         'title_length' => [
-            self::IMPACT => 5,
+            self::IMPACT  => 5,
             self::MESSAGE => 'The page title length should be between 10 and 60 characters.' .
-                ' Title should also include your main keyword'
+                ' Title should also include your main keyword',
         ],
         'missing_description' => [
-            self::IMPACT => 5,
+            self::IMPACT  => 5,
             self::MESSAGE => 'Missing page meta description tag. We strongly recommend to add it.' .
-                ' It should be between 30 and 120 characters and should include your main keyword'
+                ' It should be between 30 and 120 characters and should include your main keyword',
         ],
         'description_length' => [
-            self::IMPACT => 3,
+            self::IMPACT  => 3,
             self::MESSAGE => 'The page meta description length should be between 30 and 120 characters.' .
-                ' Description should also include your main keyword'
-        ]
+                ' Description should also include your main keyword',
+        ],
     ];
 
     public function __construct($inputData)
@@ -55,6 +55,7 @@ class MetaMetric extends AbstractMetric
             return parent::setUpResultsConditions($conditions);
         }
         $conditions = [...$conditions, 'title_length' => $this->checkTitleTag(), 'missing_description' => isset($this->value['meta']) && empty($this->value['meta'][self::DESCRIPTION]), 'description_length' => $this->checkMetaDescriptionTag()];
+
         return parent::setUpResultsConditions($conditions);
     }
 
