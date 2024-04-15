@@ -2,11 +2,14 @@
 
 namespace SeoAnalyzer\Parser;
 
+use Override;
+
 class ExampleCustomParser extends Parser
 {
     /**
      * @inheritDoc
      */
+    #[Override]
     public function getAlts(): array
     {
         $alts = [];
