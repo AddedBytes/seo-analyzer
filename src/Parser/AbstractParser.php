@@ -5,7 +5,7 @@ namespace SeoAnalyzer\Parser;
 use DOMDocument;
 use DOMElement;
 use DOMNodeList;
-use Override;
+
 
 abstract class AbstractParser implements ParserInterface
 {

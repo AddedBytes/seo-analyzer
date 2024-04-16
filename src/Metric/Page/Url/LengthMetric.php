@@ -2,7 +2,7 @@
 
 namespace SeoAnalyzer\Metric\Page\Url;
 
-use Override;
+
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class LengthMetric extends AbstractMetric

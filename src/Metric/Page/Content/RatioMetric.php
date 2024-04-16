@@ -2,7 +2,7 @@
 
 namespace SeoAnalyzer\Metric\Page\Content;
 
-use Override;
+
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class RatioMetric extends AbstractMetric

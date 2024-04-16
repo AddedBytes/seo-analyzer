@@ -2,7 +2,7 @@
 
 namespace SeoAnalyzer\Metric\Page\Keyword;
 
-use Override;
+
 use SeoAnalyzer\Metric\AbstractMetric;
 use SeoAnalyzer\Metric\KeywordBasedMetricInterface;
 

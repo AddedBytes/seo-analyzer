@@ -2,8 +2,6 @@
 
 namespace SeoAnalyzer\Parser;
 
-use Override;
-
 class ExampleCustomParser extends Parser
 {
     /**

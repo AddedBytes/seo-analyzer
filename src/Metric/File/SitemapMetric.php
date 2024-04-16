@@ -2,7 +2,7 @@
 
 namespace SeoAnalyzer\Metric\File;
 
-use Override;
+
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class SitemapMetric extends AbstractMetric

@@ -2,7 +2,7 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
-use Override;
+
 
 class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
 {

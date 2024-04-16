@@ -4,7 +4,7 @@ namespace SeoAnalyzer\HttpClient;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
-use Override;
+
 use Psr\Http\Message\ResponseInterface;
 use SeoAnalyzer\HttpClient\Exception\HttpException;
 

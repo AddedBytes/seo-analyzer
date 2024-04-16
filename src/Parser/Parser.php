@@ -2,7 +2,7 @@
 
 namespace SeoAnalyzer\Parser;
 
-use Override;
+
 
 class Parser extends AbstractParser
 {

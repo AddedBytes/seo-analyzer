@@ -2,7 +2,7 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
-use Override;
+
 use SeoAnalyzer\Factor;
 use SeoAnalyzer\Metric\AbstractMetric;
 
