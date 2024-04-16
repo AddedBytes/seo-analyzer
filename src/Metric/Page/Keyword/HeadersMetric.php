@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\Page\Keyword;
 
-
 use SeoAnalyzer\Metric\AbstractMetric;
 use SeoAnalyzer\Metric\KeywordBasedMetricInterface;
 
@@ -30,7 +29,6 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         return $this->checkTheResults('Good! The site headers contain the keyword phrase');
@@ -39,7 +37,6 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
     /**
      * @inheritDoc
      */
-    
     protected function setUpResultsConditions(array $conditions = []): bool
     {
         $conditions = [

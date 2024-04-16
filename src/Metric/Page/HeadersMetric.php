@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
-
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class HeadersMetric extends AbstractMetric
@@ -54,7 +53,6 @@ class HeadersMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         return $this->checkTheResults('The headers structure on the site looks very good');
@@ -63,7 +61,6 @@ class HeadersMetric extends AbstractMetric
     /**
      * @inheritDoc
      */
-    
     protected function setUpResultsConditions(array $conditions = []): bool
     {
         $conditions = [

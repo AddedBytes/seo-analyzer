@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
-
 use SeoAnalyzer\Metric\AbstractMetric;
 use SeoAnalyzer\Metric\KeywordBasedMetricInterface;
 
@@ -13,7 +12,6 @@ class KeywordMetric extends AbstractMetric implements KeywordBasedMetricInterfac
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         $this->name = 'Keyword' . $this->value['type'];

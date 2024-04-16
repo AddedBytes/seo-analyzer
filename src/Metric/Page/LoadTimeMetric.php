@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
-
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class LoadTimeMetric extends AbstractMetric
@@ -12,7 +11,6 @@ class LoadTimeMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         if ($this->value === false) {

@@ -2,8 +2,6 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
-
-
 class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
 {
     public string $description = 'Keyword density in page headers';
@@ -11,7 +9,6 @@ class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         if (! empty($overusedWords = $this->getHeadersOverusedWords())) {

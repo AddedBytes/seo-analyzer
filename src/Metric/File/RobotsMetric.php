@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\File;
 
-
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class RobotsMetric extends AbstractMetric
@@ -12,7 +11,6 @@ class RobotsMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         if (empty($this->value)) {

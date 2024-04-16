@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\File;
 
-
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class SitemapMetric extends AbstractMetric
@@ -12,7 +11,6 @@ class SitemapMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         if (empty($this->value)) {

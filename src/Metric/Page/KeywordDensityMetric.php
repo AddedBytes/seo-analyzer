@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
-
 use SeoAnalyzer\Factor;
 use SeoAnalyzer\Metric\KeywordBasedMetricInterface;
 
@@ -13,7 +12,6 @@ class KeywordDensityMetric extends AbstractKeywordDensityMetric implements Keywo
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         $keywords = $this->analyseKeywords($this->value['text'], $this->value['stop_words']);

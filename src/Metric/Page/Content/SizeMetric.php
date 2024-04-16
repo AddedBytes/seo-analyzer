@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\Page\Content;
 
-
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class SizeMetric extends AbstractMetric
@@ -43,7 +42,6 @@ class SizeMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         return $this->checkTheResults('The size of your page is ok');

@@ -7,7 +7,6 @@ class ExampleCustomParser extends Parser
     /**
      * @inheritDoc
      */
-    
     public function getAlts(): array
     {
         $alts = [];

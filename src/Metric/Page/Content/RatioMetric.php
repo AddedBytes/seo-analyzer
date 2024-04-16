@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\Page\Content;
 
-
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class RatioMetric extends AbstractMetric
@@ -21,7 +20,6 @@ class RatioMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         if ($this->value < 10) {
