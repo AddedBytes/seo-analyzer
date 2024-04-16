@@ -29,7 +29,8 @@
     "symfony/cache": "^7.0.6",
     "symfony/translation": "^7.0.4",
     "symfony/var-dumper": "^7.0.6",
-    "symfony/yaml": "^7.0.3"
+    "symfony/yaml": "^7.0.3",
+    "jaschilz/php-coverage-badger": "^2.0"
   },
   "require-dev": {
     "ergebnis/composer-normalize": "^2.42.0",
@@ -40,8 +41,7 @@
     "phpstan/phpstan": "^1.10.67",
     "phpstan/phpstan-deprecation-rules": "^1.1.4",
     "rector/rector": "^1.0.4",
-    "roave/security-advisories": "dev-latest",
-    "squizlabs/php_codesniffer": "^3.9.1"
+    "roave/security-advisories": "dev-latest"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
@@ -65,7 +65,14 @@
     "sort-packages": true
   },
   "scripts": {
-    "coverage": "./vendor/bin/pest --type-coverage --min=100",
-    "test": "./vendor/bin/pest"
+    "analyse": "./vendor/bin/phpstan analyse",
+    "analyse-baseline": "./vendor/bin/phpstan analyse --generate-baseline --allow-empty-baseline ",
+    "format-dry-run": "./vendor/bin/php-cs-fixer fix --dry-run --diff",
+    "format-fix": "./vendor/bin/php-cs-fixer fix",
+    "rector": "./vendor/bin/rector process --dry-run",
+    "rector-do": "./vendor/bin/rector process",
+    "test-coverage": "./vendor/bin/pest --coverage-clover clover.xml && ./vendor/bin/php-coverage-badger clover.xml coverage.svg",
+    "test": "./vendor/bin/pest",
+    "test-dirty": "./vendor/bin/pest --dirty"
   }
 }

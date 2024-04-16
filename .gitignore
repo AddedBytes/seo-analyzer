@@ -14,3 +14,5 @@ ray.php
 /build/
 /phpstan-baseline.neon
 /.phpunit.cache/
+/clover.xml
+/coverage.svg
