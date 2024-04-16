@@ -28,10 +28,9 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->parallel(240, 8, 8);
 
 
-//    $rectorConfig->skip([
-//        ClassPropertyAssignToConstructorPromotionRector::class,
-//        AddOverrideAttributeToOverriddenMethodsRector::class,
-//    ]);
+    $rectorConfig->skip([
+        AddOverrideAttributeToOverriddenMethodsRector::class,
+    ]);
 
 
     $rectorConfig::configure()->withPreparedSets(

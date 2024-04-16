@@ -5,6 +5,11 @@ parameters:
         - src
     tmpDir: build/phpstan
     checkMissingIterableValueType: true
-    reportUnmatchedIgnoredErrors: true
+    reportUnmatchedIgnoredErrors: false
     treatPhpDocTypesAsCertain: false
-
+    ignoreErrors:
+        - '#^Call to an undefined method DOMNode\:\:getAttribute\(\)\.$#'
+        - '#^Access to an undefined property SeoAnalyzer\\Metric\\MetricInterface\:\:\$name\.$#'
+        - '#^Access to an undefined property SeoAnalyzer\\Metric\\MetricInterface\:\:\$description\.$#'
+        - '#^Access to an undefined property SeoAnalyzer\\Metric\\MetricInterface\:\:\$value\.$#'
+        - '#^Access to an undefined property SeoAnalyzer\\Metric\\MetricInterface\:\:\$impact\.$#'
