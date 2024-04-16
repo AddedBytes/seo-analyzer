@@ -3,6 +3,7 @@ Basic PHP library to check several SEO metrics of a website.
 
 [![PHP Composer](https://github.com/AddedBytes/seo-analyzer/actions/workflows/php.yml/badge.svg)](https://github.com/AddedBytes/seo-analyzer/actions/workflows/php.yml)
 ![Coverage](https://raw.githubusercontent.com/AddedBytes/seo-analyzer/ca3ecbbc5f505e1c963f0db07c233f1d942db96d/coverage.svg)
+[![Check & fix styling](https://github.com/AddedBytes/seo-analyzer/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/AddedBytes/seo-analyzer/actions/workflows/php-cs-fixer.yml)
 
 ## This is a fork
 
