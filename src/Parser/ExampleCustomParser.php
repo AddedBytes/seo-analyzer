@@ -9,7 +9,7 @@ class ExampleCustomParser extends Parser
     /**
      * @inheritDoc
      */
-    #[Override]
+    
     public function getAlts(): array
     {
         $alts = [];

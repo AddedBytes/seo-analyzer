@@ -9,7 +9,7 @@ class Parser extends AbstractParser
     /**
      * @inheritDoc
      */
-    #[Override]
+    
     public function getMeta(): array
     {
         $meta = [];
@@ -23,7 +23,7 @@ class Parser extends AbstractParser
     /**
      * @inheritDoc
      */
-    #[Override]
+    
     public function getHeaders(): array
     {
         $headers = [];
@@ -39,7 +39,7 @@ class Parser extends AbstractParser
     /**
      * @inheritDoc
      */
-    #[Override]
+    
     public function getTitle(): string
     {
         if ($this->getDomElements('title')->length > 0) {
@@ -52,7 +52,7 @@ class Parser extends AbstractParser
     /**
      * @inheritDoc
      */
-    #[Override]
+    
     public function getAlts(): array
     {
         $alts = [];
@@ -68,7 +68,7 @@ class Parser extends AbstractParser
     /**
      * @inheritDoc
      */
-    #[Override]
+    
     public function getText(): string
     {
         $this->removeTags('script');

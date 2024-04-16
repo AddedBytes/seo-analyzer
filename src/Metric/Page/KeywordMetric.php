@@ -13,7 +13,7 @@ class KeywordMetric extends AbstractMetric implements KeywordBasedMetricInterfac
     /**
      * @inheritdoc
      */
-    #[Override]
+    
     public function analyze(): string
     {
         $this->name = 'Keyword' . $this->value['type'];

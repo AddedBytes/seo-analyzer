@@ -19,7 +19,7 @@ abstract class AbstractParser implements ParserInterface
         }
     }
 
-    #[Override]
+    
     public function setContent(mixed $html): void
     {
         $internalErrors = libxml_use_internal_errors(true);

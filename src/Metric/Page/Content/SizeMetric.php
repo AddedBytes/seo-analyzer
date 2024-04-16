@@ -43,7 +43,7 @@ class SizeMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    #[Override]
+    
     public function analyze(): string
     {
         return $this->checkTheResults('The size of your page is ok');

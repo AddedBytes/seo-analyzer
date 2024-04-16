@@ -30,7 +30,7 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
     /**
      * @inheritdoc
      */
-    #[Override]
+    
     public function analyze(): string
     {
         return $this->checkTheResults('Good! The site headers contain the keyword phrase');
@@ -39,7 +39,7 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
     /**
      * @inheritDoc
      */
-    #[Override]
+    
     protected function setUpResultsConditions(array $conditions = []): bool
     {
         $conditions = [

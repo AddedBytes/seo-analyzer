@@ -21,7 +21,7 @@ class RatioMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    #[Override]
+    
     public function analyze(): string
     {
         if ($this->value < 10) {

@@ -11,7 +11,7 @@ class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
     /**
      * @inheritdoc
      */
-    #[Override]
+    
     public function analyze(): string
     {
         if (! empty($overusedWords = $this->getHeadersOverusedWords())) {

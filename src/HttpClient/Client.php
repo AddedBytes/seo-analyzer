@@ -17,7 +17,7 @@ class Client implements ClientInterface
         ],
     ];
 
-    #[Override]
+    
     public function get(string $url, array $options = []): ResponseInterface
     {
         if (empty($options)) {

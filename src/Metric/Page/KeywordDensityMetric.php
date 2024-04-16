@@ -13,7 +13,7 @@ class KeywordDensityMetric extends AbstractKeywordDensityMetric implements Keywo
     /**
      * @inheritdoc
      */
-    #[Override]
+    
     public function analyze(): string
     {
         $keywords = $this->analyseKeywords($this->value['text'], $this->value['stop_words']);

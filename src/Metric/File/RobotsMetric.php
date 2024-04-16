@@ -12,7 +12,7 @@ class RobotsMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    #[Override]
+    
     public function analyze(): string
     {
         if (empty($this->value)) {

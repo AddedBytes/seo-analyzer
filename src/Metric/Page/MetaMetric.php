@@ -41,7 +41,7 @@ class MetaMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    #[Override]
+    
     public function analyze(): string
     {
         return $this->checkTheResults('The site meta tags look good');
@@ -50,7 +50,7 @@ class MetaMetric extends AbstractMetric
     /**
      * @inheritDoc
      */
-    #[Override]
+    
     protected function setUpResultsConditions(array $conditions = []): bool
     {
         $conditions = ['no_tags' => empty($this->value)];

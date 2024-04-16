@@ -54,7 +54,7 @@ class HeadersMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    #[Override]
+    
     public function analyze(): string
     {
         return $this->checkTheResults('The headers structure on the site looks very good');
@@ -63,7 +63,7 @@ class HeadersMetric extends AbstractMetric
     /**
      * @inheritDoc
      */
-    #[Override]
+    
     protected function setUpResultsConditions(array $conditions = []): bool
     {
         $conditions = [
