@@ -6,7 +6,6 @@ use DOMDocument;
 use DOMElement;
 use DOMNodeList;
 
-
 abstract class AbstractParser implements ParserInterface
 {
     protected DOMDocument $dom;
@@ -19,7 +18,6 @@ abstract class AbstractParser implements ParserInterface
         }
     }
 
-    
     public function setContent(mixed $html): void
     {
         $internalErrors = libxml_use_internal_errors(true);

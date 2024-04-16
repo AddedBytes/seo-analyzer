@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\Page\Url;
 
-
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class LengthMetric extends AbstractMetric
@@ -12,7 +11,6 @@ class LengthMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         if ($this->value > 40) {

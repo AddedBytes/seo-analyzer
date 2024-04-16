@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
-
 use SeoAnalyzer\Metric\AbstractMetric;
 
 class RedirectMetric extends AbstractMetric
@@ -12,7 +11,6 @@ class RedirectMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         if (! empty($this->value)) {

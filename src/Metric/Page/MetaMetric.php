@@ -2,7 +2,6 @@
 
 namespace SeoAnalyzer\Metric\Page;
 
-
 use SeoAnalyzer\Factor;
 use SeoAnalyzer\Metric\AbstractMetric;
 
@@ -41,7 +40,6 @@ class MetaMetric extends AbstractMetric
     /**
      * @inheritdoc
      */
-    
     public function analyze(): string
     {
         return $this->checkTheResults('The site meta tags look good');
@@ -50,7 +48,6 @@ class MetaMetric extends AbstractMetric
     /**
      * @inheritDoc
      */
-    
     protected function setUpResultsConditions(array $conditions = []): bool
     {
         $conditions = ['no_tags' => empty($this->value)];

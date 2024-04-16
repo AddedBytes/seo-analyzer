@@ -2,14 +2,11 @@
 
 namespace SeoAnalyzer\Parser;
 
-
-
 class Parser extends AbstractParser
 {
     /**
      * @inheritDoc
      */
-    
     public function getMeta(): array
     {
         $meta = [];
@@ -23,7 +20,6 @@ class Parser extends AbstractParser
     /**
      * @inheritDoc
      */
-    
     public function getHeaders(): array
     {
         $headers = [];
@@ -39,7 +35,6 @@ class Parser extends AbstractParser
     /**
      * @inheritDoc
      */
-    
     public function getTitle(): string
     {
         if ($this->getDomElements('title')->length > 0) {
@@ -52,7 +47,6 @@ class Parser extends AbstractParser
     /**
      * @inheritDoc
      */
-    
     public function getAlts(): array
     {
         $alts = [];
@@ -68,7 +62,6 @@ class Parser extends AbstractParser
     /**
      * @inheritDoc
      */
-    
     public function getText(): string
     {
         $this->removeTags('script');
