@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\HttpClient;
 
 use Psr\Http\Message\ResponseInterface;

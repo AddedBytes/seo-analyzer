@@ -19,7 +19,7 @@ class Cache
     public function __construct(string|null $adapterClass = null, int|null $ttl = null)
     {
         $ttl ??= 300;
-        if (empty($adapterClass)) {
+        if ($adapterClass === null || $adapterClass === '' || $adapterClass === '0') {
             $adapterClass = FilesystemAdapter::class;
         }
         $this->adapter = new Psr16Cache(new $adapterClass('seoanalyzer', $ttl));

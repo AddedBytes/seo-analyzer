@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\Metric\Page;
 
 use SeoAnalyzer\Metric\AbstractMetric;
@@ -40,11 +42,11 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
     protected function analyseKeywords(string $text, array $stopWords, int|null $maxPhraseWords = null, int|null $minCount = null): array
     {
         $maxPhraseWords ??= 4;
-        $minCount       ??= 0;
-        $words               = $this->getWords($text, $stopWords);
-        $keywords            = $this->getKeywords($words, $maxPhraseWords);
+        $minCount ??= 0;
+        $words = $this->getWords($text, $stopWords);
+        $keywords = $this->getKeywords($words, $maxPhraseWords);
         $keywordsPercentages = [];
-        for ($phraseWordCount = 1; $phraseWordCount <= $maxPhraseWords; $phraseWordCount++) {
+        for ($phraseWordCount = 1; $phraseWordCount <= $maxPhraseWords; ++$phraseWordCount) {
             if (! empty($keywords[$phraseWordCount])) {
                 $keywordsPercentages[$phraseWordCount] = $this->calculateKeywordsPercentage($keywords[$phraseWordCount], $minCount, 10);
             }
@@ -60,25 +62,25 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
      */
     protected function getWords(string $text, array $stopWords = []): array
     {
-        $text      = html_entity_decode($text);
-        $stopWords = array_map(static fn (string $word) => trim((string)$word), $stopWords);
+        $text = html_entity_decode($text);
+        $stopWords = array_map(static fn (string $word): string => trim((string)$word), $stopWords);
         $stopWords = array_merge($stopWords, ['\'', '"', "-", "_"]);
-        $text      = strtolower((string)preg_replace('/[^a-zA-Z0-9\s]/', '', $text));
-        $words     = str_word_count($text, 1);
-        $words     = array_diff($words, $stopWords);
+        $text = strtolower((string)preg_replace('/[^a-zA-Z0-9\s]/', '', $text));
+        $words = str_word_count($text, 1);
+        $words = array_diff($words, $stopWords);
 
-        return array_values(array_filter($words, static fn (string $word) => strlen((string)$word) > 2));
+        return array_values(array_filter($words, static fn (string $word): bool => strlen((string)$word) > 2));
     }
 
     protected function getKeywords(array $words, int $maxPhraseWords): array
     {
-        $count    = count($words);
+        $count = count($words);
         $keywords = [];
-        for ($i = 0; $i < $count; $i++) {
-            for ($x = 1; $x <= $maxPhraseWords; $x++) {
+        for ($i = 0; $i < $count; ++$i) {
+            for ($x = 1; $x <= $maxPhraseWords; ++$x) {
                 if ($i + $x <= $count) {
                     $phrase = [];
-                    for ($y = 0; $y < $x; $y++) {
+                    for ($y = 0; $y < $x; ++$y) {
                         $phrase[] = $words[$i + $y];
                     }
                     $keywords[$x][] = implode(" ", $phrase);
@@ -92,10 +94,10 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
     protected function calculateKeywordsPercentage(array $keywords, int|null $min_count = null, int|null $limit = null): array
     {
         $min_count ??= 0;
-        $limit     ??= 10;
+        $limit ??= 10;
         $keywords = array_count_values($keywords);
         arsort($keywords);
-        $keywords      = array_filter($keywords, static fn (int $count) => $count >= (int)$min_count);
+        $keywords = array_filter($keywords, static fn (int $count): bool => $count >= (int)$min_count);
         $keywordsCount = array_sum($keywords);
         foreach ($keywords as $keyword => $count) {
             $keywords[$keyword] = round($count / $keywordsCount * 100);
@@ -112,7 +114,7 @@ abstract class AbstractKeywordDensityMetric extends AbstractMetric implements Ke
     protected function getOverusedKeywords(array $keywords, int $maxPercentage = 10, int $maxPhraseWords = 4): array
     {
         $overusedWords = [];
-        for ($i = 1; $i <= $maxPhraseWords; $i++) {
+        for ($i = 1; $i <= $maxPhraseWords; ++$i) {
             if (! empty($keywords[$i])) {
                 foreach ($keywords[$i] as $keyword => $percentage) {
                     $actualMaxPercentage = $maxPercentage * $i;

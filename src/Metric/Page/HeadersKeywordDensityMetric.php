@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\Metric\Page;
 
 class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
@@ -11,8 +13,8 @@ class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
      */
     public function analyze(): string
     {
-        if (! empty($overusedWords = $this->getHeadersOverusedWords())) {
-            $this->impact            = 4;
+        if ($overusedWords = $this->getHeadersOverusedWords() !== []) {
+            $this->impact = 4;
             $this->value['overused'] = $overusedWords;
 
             return 'There are some overused keywords in headers. You should consider limiting the use of those phrases';
@@ -26,9 +28,9 @@ class HeadersKeywordDensityMetric extends AbstractKeywordDensityMetric
      */
     protected function getHeadersOverusedWords(): array
     {
-        $this->value   = $this->getHeadersKeywords();
+        $this->value = $this->getHeadersKeywords();
         $overusedWords = [];
-        if (! empty($this->value)) {
+        if ($this->value !== []) {
             foreach ($this->value as $keywords) {
                 $overusedWords = array_merge($overusedWords, $this->getOverusedKeywords($keywords, 35, 3));
             }

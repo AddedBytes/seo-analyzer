@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\Metric\Page;
 
 use SeoAnalyzer\Metric\AbstractMetric;

@@ -10,12 +10,12 @@ class ConditionsCallableTestMetric extends AbstractMetric
 {
     public string $description = 'Test metric';
 
-    public function __construct($inputData)
+    public function __construct(mixed $inputData)
     {
         parent::__construct($inputData);
         $this->results = [
             'test_condition' => [
-                'condition' => static function ($value) {
+                'condition' => static function ($value): bool {
                     if (empty($value)) {
                         return true;
                     }

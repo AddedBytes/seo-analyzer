@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\Metric\Page;
 
 use SeoAnalyzer\Factor;
@@ -11,21 +13,21 @@ class MetaMetric extends AbstractMetric
 
     protected array $results = [
         'no_tags' => [
-            self::IMPACT  => 8,
+            self::IMPACT => 8,
             self::MESSAGE => 'Missing page title and description meta tags. You should add the title meta tag at least',
         ],
         'title_length' => [
-            self::IMPACT  => 5,
+            self::IMPACT => 5,
             self::MESSAGE => 'The page title length should be between 10 and 60 characters.' .
                 ' Title should also include your main keyword',
         ],
         'missing_description' => [
-            self::IMPACT  => 5,
+            self::IMPACT => 5,
             self::MESSAGE => 'Missing page meta description tag. We strongly recommend to add it.' .
                 ' It should be between 30 and 120 characters and should include your main keyword',
         ],
         'description_length' => [
-            self::IMPACT  => 3,
+            self::IMPACT => 3,
             self::MESSAGE => 'The page meta description length should be between 30 and 120 characters.' .
                 ' Description should also include your main keyword',
         ],
@@ -48,6 +50,7 @@ class MetaMetric extends AbstractMetric
     /**
      * @inheritDoc
      */
+    #[\Override]
     protected function setUpResultsConditions(array $conditions = []): bool
     {
         $conditions = ['no_tags' => empty($this->value)];

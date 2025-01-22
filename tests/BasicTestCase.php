@@ -14,7 +14,7 @@ abstract class BasicTestCase extends BaseTestCase
 {
     public function getClientMock(string|null $response = null): ClientInterface|MockObject
     {
-        if (empty($response)) {
+        if ($response === null || $response === '' || $response === '0') {
             $response = file_get_contents(__DIR__ . '/data/test.html');
         }
         $stream = $this->getMockBuilder(StreamInterface::class)->disableOriginalConstructor()->getMock();

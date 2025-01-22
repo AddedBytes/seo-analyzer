@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\Metric\Page\Keyword;
 
 use SeoAnalyzer\Metric\AbstractMetric;
@@ -11,11 +13,11 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
 
     protected array $results = [
         'no_keyword_h1' => [
-            self::IMPACT  => 7,
+            self::IMPACT => 7,
             self::MESSAGE => 'The main H1 header does not contain the keyword phrase. Adding it could strongly improve SEO',
         ],
         'no_keyword_h2' => [
-            self::IMPACT  => 3,
+            self::IMPACT => 3,
             self::MESSAGE => 'The site H2 headers does not contain the keyword phrase. Adding it could strongly improve SEO',
         ],
     ];
@@ -37,6 +39,7 @@ class HeadersMetric extends AbstractMetric implements KeywordBasedMetricInterfac
     /**
      * @inheritDoc
      */
+    #[\Override]
     protected function setUpResultsConditions(array $conditions = []): bool
     {
         $conditions = [

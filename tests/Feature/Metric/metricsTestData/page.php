@@ -168,27 +168,27 @@ return  [
         0.34,
         [
             'class' => '\\' . LoadTimeMetric::class,
-            'value' => 0.34,
+            'value' => 0.0,
             'impact' => 0,
             'analysis' => 'The site loads very fast'
         ]
     ],
     [
         'page.loadTime',
-        1.26,
+        2,
         [
             'class' => '\\' . LoadTimeMetric::class,
-            'value' => 1.26,
+            'value' => 2.0,
             'impact' => 2,
             'analysis' => 'You should optimise your site for faster loading'
         ]
     ],
     [
         'page.loadTime',
-        4.11,
+        4,
         [
             'class' => '\\' . LoadTimeMetric::class,
-            'value' => 4.11,
+            'value' => 4.0,
             'impact' => 8,
             'analysis' => 'The site takes very long to load'
         ]

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\Metric\Page;
 
 use SeoAnalyzer\Factor;
@@ -17,13 +19,13 @@ class KeywordDensityMetric extends AbstractKeywordDensityMetric implements Keywo
         $keywords = $this->analyseKeywords($this->value['text'], $this->value['stop_words']);
         unset($this->value);
         $this->value[Factor::KEYWORDS] = $keywords;
-        $overusedWords                 = $this->getOverusedKeywords($keywords);
+        $overusedWords = $this->getOverusedKeywords($keywords);
         if (! empty($this->keyword)) {
             return $this->analyzeWithKeyword($keywords, $overusedWords);
         }
-        if (! empty($overusedWords)) {
+        if ($overusedWords !== []) {
             $this->value['overused'] = $overusedWords;
-            $this->impact            = 3;
+            $this->impact = 3;
 
             return 'There are some overused keywords on site. You should consider limiting the use of overused phrases';
         }
@@ -36,8 +38,8 @@ class KeywordDensityMetric extends AbstractKeywordDensityMetric implements Keywo
         $this->name = 'KeywordDensityKeyword';
         unset($this->value);
         $this->value[Factor::KEYWORDS] = $keywords;
-        $this->value[Factor::KEYWORD]  = $this->keyword;
-        $isPresent                     = false;
+        $this->value[Factor::KEYWORD] = $this->keyword;
+        $isPresent = false;
         foreach ($this->getPhrases() as $phrase) {
             if (stripos((string) $phrase, (string) $this->keyword) !== false) {
                 if (in_array($this->keyword, $overusedWords)) {

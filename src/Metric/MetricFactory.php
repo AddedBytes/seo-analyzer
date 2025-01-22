@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\Metric;
 
 use ReflectionException;
@@ -13,7 +15,7 @@ class MetricFactory
     public static function get(string $key, mixed $inputData = null): mixed
     {
         $class = __NAMESPACE__;
-        $path  = explode(".", $key);
+        $path = explode(".", $key);
         foreach ($path as $level) {
             if(strtolower($level) === 'ssl') {
                 $class .= '\\' . strtoupper($level);

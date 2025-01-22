@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer;
 
 use InvalidArgumentException;
@@ -24,11 +26,11 @@ class Analyzer
 
     public function __construct(Page|null $page = null, public ClientInterface|Client|null $client = null)
     {
-        if (empty($this->client)) {
+        if (! $this->client instanceof \SeoAnalyzer\HttpClient\ClientInterface) {
             $this->client = new Client();
         }
 
-        if (! empty($page)) {
+        if ($page instanceof \SeoAnalyzer\Page) {
             $this->page = $page;
         }
     }
@@ -42,11 +44,11 @@ class Analyzer
      */
     public function analyzeUrl(string $url, string|null $keyword = null, string|null $locale = null): array
     {
-        if (! empty($locale)) {
+        if ($locale !== null && $locale !== '' && $locale !== '0') {
             $this->locale = $locale;
         }
         $this->page = new Page($url, $locale, $this->client);
-        if (! empty($keyword)) {
+        if ($keyword !== null && $keyword !== '' && $keyword !== '0') {
             $this->page->keyword = $keyword;
         }
 
@@ -61,7 +63,7 @@ class Analyzer
      */
     public function analyzeFile(string $filename, string|null $locale = null): array
     {
-        $this->page          = new Page(null, $locale, $this->client);
+        $this->page = new Page(null, $locale, $this->client);
         $this->page->content = file_get_contents($filename);
 
         return $this->analyze();
@@ -75,7 +77,7 @@ class Analyzer
      */
     public function analyzeHtml(string $htmlString, string|null $locale = null): array
     {
-        $this->page          = new Page(null, $locale, $this->client);
+        $this->page = new Page(null, $locale, $this->client);
         $this->page->content = $htmlString;
 
         return $this->analyze();
@@ -92,7 +94,7 @@ class Analyzer
         if (empty($this->page)) {
             throw new InvalidArgumentException('No Page to analyze');
         }
-        if (empty($this->metrics)) {
+        if ($this->metrics === []) {
             $this->metrics = $this->getMetrics();
         }
         $results = [];
@@ -142,7 +144,7 @@ class Analyzer
      */
     protected function getFileContent(string $url, string $filename): bool|string
     {
-        $cache    = new Cache();
+        $cache = new Cache();
         $cacheKey = 'file_content_' . base64_encode($url . '/' . $filename);
         if ($value = $cache->get($cacheKey)) {
             return $value;
@@ -150,7 +152,7 @@ class Analyzer
 
         try {
             $response = $this->client->get($url . '/' . $filename);
-            $content  = $response->getBody()->getContents();
+            $content = $response->getBody()->getContents();
         } catch (HttpException) {
             return false;
         }
@@ -166,8 +168,8 @@ class Analyzer
     {
         $this->translator = new Translator($locale);
         $this->translator->setFallbackLocales(['en_GB']);
-        $yamlLoader = new YamlFileLoader();
-        $this->translator->addLoader('yaml', $yamlLoader);
+        $yamlFileLoader = new YamlFileLoader();
+        $this->translator->addLoader('yaml', $yamlFileLoader);
         $localeFilename = dirname(__DIR__) . '/locale/' . $locale . '.yml';
         if (is_file($localeFilename)) {
             $this->translator->addResource('yaml', $localeFilename, $locale);
@@ -185,10 +187,10 @@ class Analyzer
         }
 
         return [
-            'analysis'        => $this->translator->trans($results),
-            'name'            => $metric->name,
-            'description'     => $this->translator->trans($metric->description),
-            'value'           => $metric->value,
+            'analysis' => $this->translator->trans($results),
+            'name' => $metric->name,
+            'description' => $this->translator->trans($metric->description),
+            'value' => $metric->value,
             'negative_impact' => $metric->impact,
         ];
     }

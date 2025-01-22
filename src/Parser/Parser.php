@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\Parser;
 
 class Parser extends AbstractParser
@@ -10,8 +12,8 @@ class Parser extends AbstractParser
     public function getMeta(): array
     {
         $meta = [];
-        foreach ($this->getDomElements('meta') as $item) {
-            $meta[$item->getAttribute('name')] = trim($item->getAttribute('content'));
+        foreach ($this->getDomElements('meta') as $domElement) {
+            $meta[$domElement->getAttribute('name')] = trim($domElement->getAttribute('content'));
         }
 
         return $meta;
@@ -23,7 +25,7 @@ class Parser extends AbstractParser
     public function getHeaders(): array
     {
         $headers = [];
-        for ($x = 1; $x <= 5; $x++) {
+        for ($x = 1; $x <= 5; ++$x) {
             foreach ($this->getDomElements('h' . $x) as $item) {
                 $headers['h' . $x][] = trim((string) $item->nodeValue);
             }
@@ -51,8 +53,8 @@ class Parser extends AbstractParser
     {
         $alts = [];
         if ($this->getDomElements('img')->length > 0) {
-            foreach ($this->getDomElements('img') as $img) {
-                $alts[] = trim($img->getAttribute('alt'));
+            foreach ($this->getDomElements('img') as $domElement) {
+                $alts[] = trim($domElement->getAttribute('alt'));
             }
         }
 

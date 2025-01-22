@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\HttpClient;
 
 use GuzzleHttp\Client as GuzzleClient;
@@ -12,14 +14,14 @@ class Client implements ClientInterface
 {
     protected array $options = [
         'allow_redirects' => ['track_redirects' => true],
-        'headers'         => [
+        'headers' => [
             'User-Agent' => 'grgk-seo-analyzer/1.0',
         ],
     ];
 
     public function get(string $url, array $options = []): ResponseInterface
     {
-        if (empty($options)) {
+        if ($options === []) {
             $options = $this->options;
         }
 

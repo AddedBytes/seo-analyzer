@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\Parser;
 
 use DOMDocument;
@@ -13,7 +15,7 @@ abstract class AbstractParser implements ParserInterface
     public function __construct(string|null $html = null)
     {
         $this->dom = new DOMDocument();
-        if (! empty($html)) {
+        if ($html !== null && $html !== '' && $html !== '0') {
             $this->setContent($html);
         }
     }
@@ -31,8 +33,8 @@ abstract class AbstractParser implements ParserInterface
         foreach ($this->getDomElements($tag) as $tag) {
             $tagsToRemove[] = $tag;
         }
-        foreach ($tagsToRemove as $item) {
-            $item->parentNode->removeChild($item);
+        foreach ($tagsToRemove as $tagToRemove) {
+            $tagToRemove->parentNode->removeChild($tagToRemove);
         }
     }
 

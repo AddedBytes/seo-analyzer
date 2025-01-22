@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SeoAnalyzer\Metric;
 
 use ReflectionClass;
 
 abstract class AbstractMetric implements MetricInterface
 {
-    final public const string HEADERS     = 'headers';
+    final public const string HEADERS = 'headers';
     final public const string DESCRIPTION = 'description';
-    final public const string IMPACT      = 'impact';
-    final public const string MESSAGE     = 'message';
+    final public const string IMPACT = 'impact';
+    final public const string MESSAGE = 'message';
 
     /**
      * @var array Possible results configuration.
@@ -30,7 +32,7 @@ abstract class AbstractMetric implements MetricInterface
 
     public function __construct(public mixed $value)
     {
-        if (empty($this->name)) {
+        if (! isset($this->name) || ($this->name === '' || $this->name === '0' || $this->name === [])) {
             $this->name = str_replace(['SeoAnalyzer\\', 'Metric', '\\'], '', (new ReflectionClass($this))->getName());
         }
     }
