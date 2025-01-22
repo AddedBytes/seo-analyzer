@@ -11,7 +11,7 @@ use SeoAnalyzer\Metric\AbstractMetric;
 use SeoAnalyzer\Page;
 
 
-test('analyze url pass', function () {
+test('analyze url pass', function (): void {
     $clientMock = $this->getClientMock();
     $analyzer = new Analyzer(null, $clientMock);
     $results = $analyzer->analyzeUrl('http://www.example.org');
@@ -25,7 +25,7 @@ test('analyze url pass', function () {
     expect(current($results))->toHaveKey('negative_impact');
 });
 
-test('analyze url pass with keyword translated', function () {
+test('analyze url pass with keyword translated', function (): void {
     $clientMock = $this->getClientMock();
     $analyzer = new Analyzer(null, $clientMock);
     $results = $analyzer->analyzeUrl('http://www.example.org', 'keyword', 'pl_PL');
@@ -34,7 +34,7 @@ test('analyze url pass with keyword translated', function () {
     $this->assertStringContainsString('Powinienieś unikać przekierowań', $results['PageRedirect']['analysis']);
 });
 
-test('analyze url with keyword pass', function () {
+test('analyze url with keyword pass', function (): void {
     $clientMock = $this->getClientMock();
     $analyzer = new Analyzer(null, $clientMock);
     $results = $analyzer->analyzeUrl('http://www.example.org', 'keyword');
@@ -47,14 +47,14 @@ test('analyze url with keyword pass', function () {
     expect(current($results))->toHaveKey('negative_impact');
 });
 
-test('analyze url fail on invalid url', function () {
+test('analyze url fail on invalid url', function (): void {
     $this->expectException(HttpException::class);
     $this->expectException(HttpException::class);
 
     (new Analyzer())->analyzeUrl('invalid-url');
 });
 
-test('analyze file pass', function () {
+test('analyze file pass', function (): void {
     $clientMock = $this->getClientMock();
     $analyzer = new Analyzer(null, $clientMock);
     $results = $analyzer->analyzeFile(dirname(__DIR__) . '/data/test.html');
@@ -67,7 +67,7 @@ test('analyze file pass', function () {
     expect(current($results))->toHaveKey('negative_impact');
 });
 
-test('analyze html pass', function () {
+test('analyze html pass', function (): void {
     $clientMock = $this->getClientMock();
     $analyzer = new Analyzer(null, $clientMock);
     $htmlString =  file_get_contents(dirname(__DIR__) . '/data/test.html');
@@ -81,7 +81,7 @@ test('analyze html pass', function () {
     expect(current($results))->toHaveKey('negative_impact');
 });
 
-test('analyze pass', function () {
+test('analyze pass', function (): void {
     $page = new Page();
     $page->content = file_get_contents(dirname(__DIR__) . '/data/test.html');
     $analyzer = new Analyzer($page);
@@ -95,7 +95,7 @@ test('analyze pass', function () {
     expect(current($results))->toHaveKey('negative_impact');
 });
 
-test('analyze fail on no page', function () {
+test('analyze fail on no page', function (): void {
     $this->expectException(InvalidArgumentException::class);
     // No
     $this->expectException(InvalidArgumentException::class);
@@ -104,7 +104,7 @@ test('analyze fail on no page', function () {
     $analyzer->analyze();
 });
 
-test('analyze pass in english as default', function () {
+test('analyze pass in english as default', function (): void {
     $page = new Page();
     $page->content = '<html lang="en"></html>';
     $analyzer = new Analyzer($page);
@@ -112,7 +112,7 @@ test('analyze pass in english as default', function () {
     expect($results['PageContentSize']['analysis'])->toEqual('The size of your page is ok');
 });
 
-test('analyze pass in polish', function () {
+test('analyze pass in polish', function (): void {
     $page = new Page();
     $page->content = '<html lang="en"></html>';
     $analyzer = new Analyzer($page);
@@ -121,7 +121,7 @@ test('analyze pass in polish', function () {
     expect($results['PageContentSize']['analysis'])->toEqual('Rozmiar strony jest w porządku');
 });
 
-test('analyze pass on empty page content', function () {
+test('analyze pass on empty page content', function (): void {
     $page = new Page();
     $page->content = '<html lang="en"></html>';
     $analyzer = new Analyzer($page);
@@ -135,7 +135,7 @@ test('analyze pass on empty page content', function () {
     expect(current($results))->toHaveKey('negative_impact');
 });
 
-test('analyze pass on invalid html', function () {
+test('analyze pass on invalid html', function (): void {
     $page = new Page();
     $page->content = "<html lang='en'><body><dif>hrad>><r\"o<!dif? \'dfgdf'''';< html>";
     $analyzer = new Analyzer($page);
@@ -149,7 +149,7 @@ test('analyze pass on invalid html', function () {
     expect(current($results))->toHaveKey('negative_impact');
 });
 
-test('get metrics pass', function () {
+test('get metrics pass', function (): void {
     $clientMock = $this->getClientMock();
     $page = new Page();
     $page->content = '<html lang="en"></html>';

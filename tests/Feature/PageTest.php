@@ -6,7 +6,7 @@ namespace Tests\Feature;
 
 use SeoAnalyzer\Page;
 
-test('constructor', function () {
+test('constructor', function (): void {
     $url = 'https://www.example.org';
     $html = '<html lang="en"><body><p>testing</p></body></html>';
     $clientMock = $this->getClientMock($html);
@@ -16,7 +16,7 @@ test('constructor', function () {
     expect($page->url)->toEqual($url);
 });
 
-test('get metrics pass with url', function () {
+test('get metrics pass with url', function (): void {
     $html = '<html lang="en"><body><p>testing</p></body></html>';
     $clientMock = $this->getClientMock($html);
     $page = new Page(null, null, $clientMock);

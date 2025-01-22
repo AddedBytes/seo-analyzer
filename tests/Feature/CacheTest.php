@@ -7,14 +7,14 @@ namespace Tests\Feature;
 use SeoAnalyzer\Cache;
 
 
-test('remember pass', function () {
+test('remember pass', function (): void {
     $cache = new Cache();
     $cache->adapter->delete('testCacheKey');
-    $value = $cache->remember('testCacheKey', fn() => 'initialValue');
+    $value = $cache->remember('testCacheKey', fn(): string => 'initialValue');
     expect($value)->toEqual('initialValue');
-    $valueCached = $cache->remember('testCacheKey', fn() => 'newValue');
+    $valueCached = $cache->remember('testCacheKey', fn(): string => 'newValue');
     expect($valueCached)->toEqual('initialValue');
     $cache->adapter->delete('testCacheKey');
-    $valueRefreshed = $cache->remember('testCacheKey', fn() => 'newValueOneMoreTime');
+    $valueRefreshed = $cache->remember('testCacheKey', fn(): string => 'newValueOneMoreTime');
     expect($valueRefreshed)->toEqual('newValueOneMoreTime');
 });

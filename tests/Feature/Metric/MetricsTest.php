@@ -7,13 +7,13 @@ namespace Tests\Feature\Metric;
 use SeoAnalyzer\Analyzer;
 use SeoAnalyzer\Metric\MetricFactory;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $analyzer = new Analyzer();
     $analyzer->setUpTranslator('pl_PL');
     $this->translator = $analyzer->translator;
 });
 
-test('analyze pass', function (string $metricKey, mixed $input, array $expected) {
+test('analyze pass', function (string $metricKey, mixed $input, array $expected): void {
     $metric = MetricFactory::get($metricKey, $input);
     expect($metric)->toBeInstanceOf($expected['class']);
     $analysis = $metric->analyze();
@@ -26,12 +26,10 @@ test('analyze pass', function (string $metricKey, mixed $input, array $expected)
     $this->assertNotEquals($analysis, $this->translator->trans($analysis));
 })->with('metricsDataProvider');
 
-dataset('metricsDataProvider', function () {
-    return array_merge(
-        require_once 'metricsTestData/file.php',
-        require_once 'metricsTestData/keywords.php',
-        require_once 'metricsTestData/page.php',
-        require_once 'metricsTestData/pageHeaders.php',
-        require_once 'metricsTestData/pageMeta.php'
-    );
-});
+dataset('metricsDataProvider', fn(): array => array_merge(
+    require_once 'metricsTestData/file.php',
+    require_once 'metricsTestData/keywords.php',
+    require_once 'metricsTestData/page.php',
+    require_once 'metricsTestData/pageHeaders.php',
+    require_once 'metricsTestData/pageMeta.php'
+));
