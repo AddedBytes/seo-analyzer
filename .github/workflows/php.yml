@@ -37,7 +37,7 @@ jobs:
         name: Get Composer Cache Directory 2
         id: composer-cache
         run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       -
         name: Cache Composer dependencies
@@ -61,6 +61,8 @@ jobs:
         name: Update Dependencies with latest stable
         if: matrix.dependency-stability == 'prefer-stable'
         run: composer update --prefer-stable
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
 
       -
         name: PHP Version
